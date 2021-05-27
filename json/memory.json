@@ -1,0 +1,80 @@
+{
+    "CONFIG":{
+
+        "ID": "05",
+
+        "NAME": "MEMORY GAME",
+
+        "VERSION": "1.0",
+
+        "LANG": "HINDI",
+
+        "BG": {
+            "ID": "01",
+            "PATH": "assets/images/memory_background.png"
+        },
+
+        "BOX": {
+            "FONT": {
+                "ID": "KRUTI-010",
+                "PATH": "assets/fonts/Kruti010.png",
+                "XML": "assets/fonts/Kruti010.xml",
+                "COLOR": "#000000",
+                "SIZE": 6
+            }
+        },
+
+        "SOUNDS":{
+            "INTRO": { "ID": "INTRO", "PATH": "assets/sounds/memory/DiwaliVOIntro.m4a", "FORCE_PLAY": true, "END_DELAY": 1000, "HIDE_TICKER": false, "VOLUME": 0.8 },
+            "CHALLENGE_INTRO": { "ID": "CHALLENGE INTRO", "PATH": "assets/sounds/memory/DiwaliVOIntro.m4a", "FORCE_PLAY": true, "END_DELAY": 1000, "HIDE_TICKER": false, "VOLUME": 0.8 },
+            "WRONG": { "ID": "WRONG", "PATH": "assets/sounds/common/NegativeSound.mp3" },
+            "RIGHT": { "ID": "RIGHT", "PATH": "assets/sounds/common/PositiveSound.mp3" },
+            "CORRECT1": { "ID": "VOExcellent", "PATH": "assets/sounds/common/VOExcellent.m4a" },
+            "CORRECT2": { "ID": "VOGoodJob", "PATH": "assets/sounds/common/VOGoodJob.m4a" },
+            "CORRECT3": { "ID": "VOWowYouAreAPro", "PATH": "assets/sounds/common/VOWowYouAreAPro.m4a" },
+            "INCORRECT1": { "ID": "QT_NotReally", "PATH": "assets/sounds/common/QT_NotReally.m4a" }
+        },
+
+        "ENDVIEW":{
+            "DELAY": 1000
+        },
+
+        "SCORE":{
+            "FLAG": 0,
+            "POINTS": 10
+        },
+
+        "CHALLENGE":{
+            "FLAG": 1,
+            "ROUNDS": {
+                "ROUND1": 60,
+                "ROUND2": 60
+            }
+        },
+
+        "GTIMER":{
+            "FLAG": true,
+            "TIME": 60
+        },
+
+        "CELEBRATION":{
+            "VISIBLE": true
+        }
+
+    },
+
+    "DATA": {
+
+        "TASK1":{
+            "CNT":{
+                "CNT1":{
+                    "ID": "LETTER1_DROP",
+                    "TXT": "A",
+                    "BOX_SND": "assets/sounds/letter/hindi/1A.m4a"
+                }
+            }
+        }
+        
+    }
+
+}
