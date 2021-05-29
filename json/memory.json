@@ -15,6 +15,7 @@
         },
 
         "BOX": {
+            
             "FONT": {
                 "ID": "KRUTI-010",
                 "PATH": "assets/fonts/Kruti010.png",
