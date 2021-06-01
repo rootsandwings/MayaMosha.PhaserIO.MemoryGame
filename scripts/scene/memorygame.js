@@ -686,6 +686,7 @@ KGames.MemoryGame.prototype = {
                     //GAME END
                     console.log("Game End!");
                     this.gameend_bol = true;
+                    this.stopgametimer();
                     this.delaysummary();
                 }
             }else{
