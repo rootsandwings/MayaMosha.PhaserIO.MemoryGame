@@ -487,9 +487,9 @@ KGames.MemoryGame.prototype = {
         this.sparkle_anim.visible = false;
     },
 
-    createcard: function(cdata){
+    createcard: function(cdata,boxsize_val){
         let cardctr = this.add.container();
-            let boxsize_val = this.CONFIG.BOX.SIZE || 0.5;
+            if(boxsize_val == null){ boxsize_val = 0.0005 }
             let letdata = Global.GetLetterData(TDict,cdata[1]);
             //DOWN IMAGE
             let downtile_img = this.add.image(0,0,this.CONFIG.ID+"-"+this.CONFIG.BOX.DOWN_IMG.ID);
@@ -533,7 +533,7 @@ KGames.MemoryGame.prototype = {
         let bounds = null;
         let positions = [];
         for(let v=0; v<cardpairs; v++){
-            let card = this.createcard(carddata[ccnt]);
+            let card = this.createcard(carddata[ccnt],taskdata.SIZE);
             this.cards_ctr.add(card);
             //PROPERTY
             card.index = carddata[ccnt][2] || 0;
@@ -786,6 +786,7 @@ KGames.MemoryGame.prototype = {
 
     //TASK CLEAR & LOAD NEXT
     clearstage: function(){
+        this.disableinteractive();
         this.cards_ctr.removeAll(true);
         this.cards_ctr.destroy();
     },
@@ -807,6 +808,7 @@ KGames.MemoryGame.prototype = {
         this.gametimerend_bol = false;
         this.gametimermode_bol = false;
         this.gamereplay_bol = false;
+        this.cardopened_val = 0;
     },
 
     loadnexttask: function(){

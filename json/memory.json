@@ -15,7 +15,6 @@
         },
 
         "BOX": {
-            "SIZE": 0.0005,
             "SPACE": 0.05,
             "TOP_IMG": {
                 "ID": "TILE-TOP",
@@ -38,7 +37,7 @@
 
         "SOUNDS":{
             "INTRO": { "ID": "INTRO", "PATH": "assets/sounds/memory/DiwaliVOIntro.m4a", "FORCE_PLAY": false, "END_DELAY": 1000, "VOLUME": 0.8 },
-            "CHALLENGE_INTRO": { "ID": "CHALLENGE INTRO", "PATH": "assets/sounds/memory/DiwaliVOIntro.m4a", "FORCE_PLAY": true, "END_DELAY": 1000, "VOLUME": 0.8 },
+            "CHALLENGE_INTRO": { "ID": "CHALLENGE INTRO", "PATH": "assets/sounds/memory/DiwaliVOIntro.m4a", "FORCE_PLAY": false, "END_DELAY": 1000, "VOLUME": 0.8 },
             "BGMUSIC": { "ID": "BG-MUSIC", "PATH": "assets/sounds/memory/MemoryBGMusic.m4a", "LOOP": true, "VOLUME": 0.4 },
             "WRONG": { "ID": "WRONG", "PATH": "assets/sounds/common/NegativeSound.mp3" },
             "RIGHT": { "ID": "RIGHT", "PATH": "assets/sounds/common/PositiveSound.mp3" },
@@ -83,7 +82,16 @@
             "TEXT": true,
             "IMAGE": false,
             "TOTAL_CARD": 6,
-            "GRID": "3X4"
+            "GRID": "3X4",
+            "SIZE": 0.0005
+        },
+        "TASK2":{
+            "LINE": 2,
+            "TEXT": true,
+            "IMAGE": false,
+            "TOTAL_CARD": 6,
+            "GRID": "3X4",
+            "SIZE": 0.0005
         }
         
     }
