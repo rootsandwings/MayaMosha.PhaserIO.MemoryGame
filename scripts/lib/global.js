@@ -31,12 +31,20 @@ Global.GetLength = function(arr){
     return cnt;
 }
 
-Global.GetLetterText = function(lang, txt){
-    lang = lang.toLowerCase();
-    if( Letter != null && lang != null ){
-        if( Letter[lang] != null && Letter[lang][txt] != null ){
-            return Letter[lang][txt];
-        }
+Global.GetLetterText = function(dict, txt){
+    if( dict != null && dict[txt] != null ){
+        return dict[txt]['letter'];
     }
     return txt;
+}
+
+Global.CloneArray = function(array){
+    let clone = array.map(a => {return {...a}});
+    return clone;
+}
+
+Global.Split = function (str, seperator) {
+    if(seperator != null){
+        return str.split(seperator);
+    }
 }

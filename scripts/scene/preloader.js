@@ -81,6 +81,12 @@ KGames.Preloader.prototype = {
                 if(CONFIG.BOX.FONT){
                     this.load.bitmapFont(CONFIG.ID+"-"+CONFIG.BOX.FONT.ID, CONFIG.BOX.FONT.PATH, CONFIG.BOX.FONT.XML);
                 }
+                if(CONFIG.BOX.TOP_IMG){
+                    this.load.image(CONFIG.ID+"-"+CONFIG.BOX.TOP_IMG.ID, CONFIG.BOX.TOP_IMG.PATH);
+                }
+                if(CONFIG.BOX.DOWN_IMG){
+                    this.load.image(CONFIG.ID+"-"+CONFIG.BOX.DOWN_IMG.ID, CONFIG.BOX.DOWN_IMG.PATH);
+                }
             }
         }
         if(typeof(DATA) != "undefined"){

@@ -15,14 +15,25 @@
         },
 
         "BOX": {
-            
+            "SIZE": 0.0005,
+            "SPACE": 0.05,
+            "TOP_IMG": {
+                "ID": "TILE-TOP",
+                "PATH": "assets/images/tile_up.png"
+            },
+            "DOWN_IMG": {
+                "ID": "TILE-DOWN",
+                "PATH": "assets/images/tile_down.png"
+            },
             "FONT": {
                 "ID": "KRUTI-010",
                 "PATH": "assets/fonts/Kruti010.png",
                 "XML": "assets/fonts/Kruti010.xml",
                 "COLOR": "#000000",
-                "SIZE": 6
-            }
+                "SIZE": 0.5
+            },
+            "CLOSE_DELAY": 1,
+            "CORRECT_DELAY": 1
         },
 
         "SOUNDS":{
@@ -67,13 +78,11 @@
     "DATA": {
 
         "TASK1":{
-            "CNT":{
-                "CNT1":{
-                    "ID": "LETTER1_DROP",
-                    "TXT": "A",
-                    "BOX_SND": "assets/sounds/letter/hindi/1A.m4a"
-                }
-            }
+            "LINE": 1,
+            "TEXT": true,
+            "IMAGE": false,
+            "TOTAL_CARD": 6,
+            "GRID": "3X4"
         }
         
     }
