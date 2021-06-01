@@ -2,7 +2,7 @@
 let Global = {}
 
 //Property
-Global.debug = false;
+Global.debug = true;
 
 //Method
 Global.Log = function(msg){
@@ -31,9 +31,9 @@ Global.GetLength = function(arr){
     return cnt;
 }
 
-Global.GetLetterText = function(dict, txt){
+Global.GetLetterData = function(dict, txt){
     if( dict != null && dict[txt] != null ){
-        return dict[txt]['letter'];
+        return dict[txt];
     }
     return txt;
 }

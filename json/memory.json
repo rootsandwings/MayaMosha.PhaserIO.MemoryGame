@@ -37,8 +37,9 @@
         },
 
         "SOUNDS":{
-            "INTRO": { "ID": "INTRO", "PATH": "assets/sounds/memory/DiwaliVOIntro.m4a", "FORCE_PLAY": true, "END_DELAY": 1000, "HIDE_TICKER": false, "VOLUME": 0.8 },
-            "CHALLENGE_INTRO": { "ID": "CHALLENGE INTRO", "PATH": "assets/sounds/memory/DiwaliVOIntro.m4a", "FORCE_PLAY": true, "END_DELAY": 1000, "HIDE_TICKER": false, "VOLUME": 0.8 },
+            "INTRO": { "ID": "INTRO", "PATH": "assets/sounds/memory/DiwaliVOIntro.m4a", "FORCE_PLAY": false, "END_DELAY": 1000, "VOLUME": 0.8 },
+            "CHALLENGE_INTRO": { "ID": "CHALLENGE INTRO", "PATH": "assets/sounds/memory/DiwaliVOIntro.m4a", "FORCE_PLAY": true, "END_DELAY": 1000, "VOLUME": 0.8 },
+            "BGMUSIC": { "ID": "BG-MUSIC", "PATH": "assets/sounds/memory/MemoryBGMusic.m4a", "LOOP": true, "VOLUME": 0.4 },
             "WRONG": { "ID": "WRONG", "PATH": "assets/sounds/common/NegativeSound.mp3" },
             "RIGHT": { "ID": "RIGHT", "PATH": "assets/sounds/common/PositiveSound.mp3" },
             "CORRECT1": { "ID": "VOExcellent", "PATH": "assets/sounds/common/VOExcellent.m4a" },

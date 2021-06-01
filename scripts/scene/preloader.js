@@ -3,6 +3,13 @@ KGames.Preloader = function(){};
 //Prototype
 KGames.Preloader.prototype = {
 
+    //DECLARE VARIABLE
+    declarevariable: function(){
+        this.applang = null;
+        this.preloadcount = 0;
+        this.preloadtotal = 2;
+    },
+
     //COMMON CONFIG
     preloadcommon: function(){
         if(typeof(APPCONFIG) != "undefined"){
@@ -112,6 +119,37 @@ KGames.Preloader.prototype = {
         }
     },
 
+    preloadgamejs: function(){
+        let CONFIG = gamejson.CONFIG;
+        if(typeof(CONFIG) != "undefined"){
+            //LOAD LANGUAGE GAME AUDIO & IMAGE
+            this.applang = (CONFIG.LANG || "").toLowerCase();
+            if(this.applang != null && this.applang != ""){
+                this.load.script('TDictJS', "scripts/dictionary/letter_"+(this.applang)+".js");
+                this.load.script('TDataJS', 'scripts/data/letter_'+(this.applang)+'.js');
+                this.load.script('IDictJS', 'scripts/dictionary/image_'+(this.applang)+'.js');
+                this.load.script('IDataJS', 'scripts/data/image_'+(this.applang)+'.js');
+            }
+        }
+    },
+
+    preloadgameassets: function(){
+        let thisclass = this;
+        let CONFIG = gamejson.CONFIG;
+        if(TDict && IDict){
+            for(const key in TDict){
+                this.load.audio(CONFIG.ID+"-"+"LETTER-SND"+TDict[key].ID,TDict[key].AUDIO);
+            }
+            for(const key in IDict){
+                this.load.image(CONFIG.ID+"-"+"IMAGE"+IDict[key].ID,IDict[key].IMAGE);
+                this.load.audio(CONFIG.ID+"-"+"IMAGE-SND"+IDict[key].ID,IDict[key].AUDIO);
+            }
+            this.load.start();
+        }else{
+            thisclass.scene.start('memorygame');
+        }
+    },
+
     //CREATE UI
     createui: function(){
         let width = this.game.config.width;
@@ -143,7 +181,7 @@ KGames.Preloader.prototype = {
         let thisclass = this;
 
         this.load.on('progress', function (value) {
-            let progress_val = Math.floor(value * 100);
+            let progress_val = Math.floor((value * 100) * ((thisclass.preloadcount+1)/thisclass.preloadtotal));
             //Global.Log("PRELOAD: PROGRESS - "+progress_val);
             thisclass.loadinglbl_txt.text = "Loading.. "+progress_val+"%";
             thisclass.progressbar_shp.scaleX = (progress_val/100);
@@ -155,13 +193,21 @@ KGames.Preloader.prototype = {
 
         this.load.on('complete', function () {
             Global.Log('PRELOAD: COMPLETE');
-            thisclass.scene.start('memorygame');
+            thisclass.preloadcount = thisclass.preloadcount + 1
+            if(thisclass.preloadcount >= thisclass.preloadtotal){
+                thisclass.load.off('progress');;
+                thisclass.load.off('fileprogress');
+                thisclass.load.off('complete');
+                thisclass.scene.start('memorygame');
+            }
         });
     },
 
     //Preload function
     preload: function(){
+        this.declarevariable();
         this.createui();
+        this.preloadgamejs();
         this.preloadlistener();
         this.preloadcommon();
         this.preloadgame();
@@ -174,7 +220,7 @@ KGames.Preloader.prototype = {
 
     //create function
     create: function(){
-        
+        this.preloadgameassets();
     },
 
     //update function

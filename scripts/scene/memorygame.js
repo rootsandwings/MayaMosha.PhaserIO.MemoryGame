@@ -12,6 +12,11 @@ KGames.MemoryGame.prototype = {
         this.challengemode_bol = false;
         this.gamereplay_bol = false ;
         this.gameend_bol = false; 
+        this.gamestart_bol = false;
+        this.challengelast_bol = false;
+        this.showceleb_bol = true;
+        this.gametimermode_bol = false;
+        this.gametimerend_bol = false;
 
         //Image
         this.bg_img = null;
@@ -23,6 +28,10 @@ KGames.MemoryGame.prototype = {
         this.centery_val = this.sheight_val * 0.5;
         this.totalcard_val = null;
         this.cardopened_val = 0;
+        this.scoreratio_val = 1;
+        this.challengeflag_val = 0;
+        this.challengerndtot_val = 0;
+        this.challengernd_val = 0;
 
         //Sound
         this.right_snd = null;
@@ -57,6 +66,28 @@ KGames.MemoryGame.prototype = {
 
         //Timer
         this.cardclose_tmr = null;
+        this.introsnd_tmr = null;
+        this.task_tmr = null;
+
+        //PRESET VALUES
+        if(this.CONFIG.CELEBRATION){
+            if(this.CONFIG.CELEBRATION.VISIBLE != null){
+                this.showceleb_bol = this.CONFIG.CELEBRATION.VISIBLE
+            }
+        }
+
+        if(this.CONFIG.CHALLENGE != null){
+            if(this.CONFIG.CHALLENGE.FLAG != null){
+                this.challengeflag_val = this.CONFIG.CHALLENGE.FLAG;
+            }
+            if(this.CONFIG.CHALLENGE.ROUNDS != null){
+                this.challengerndtot_val = Global.GetLength(this.CONFIG.CHALLENGE.ROUNDS);
+            }
+        }
+
+        // APP LANGUAGE
+        this.applang_val = this.CONFIG.LANG || "";
+        this.applang_val = this.applang_val.toLowerCase();
     },
       
     // SCALE IMAGE
@@ -109,6 +140,41 @@ KGames.MemoryGame.prototype = {
         return null;
     },
 
+    cleartween: function(tween){
+        if(tween){
+            tween.stop();
+        }
+        return null;
+    },
+
+    //STOP TIMER
+    stoptimer: function(){
+        this.task_tmr = this.cleartimer(this.task_tmr);
+        this.introsnd_tmr = this.cleartimer(this.introsnd_tmr);
+        this.cardclose_tmr = this.cleartimer(this.cardclose_tmr);
+    },
+
+    //STOP TWEEN
+    stoptween: function(){
+
+    },
+
+    //GAME TIMER
+    stopgametimer: function(){
+        if(this.challengemode_bol || this.gametimermode_bol){
+            GTimer.Stop({flag: this.gameend_bol});
+        }
+    },
+
+    startgametimer: function(){
+        //START TIMER
+        if(GTimer != null){
+            if(this.gametimermode_bol || this.challengemode_bol){
+                GTimer.Start();
+            }
+        }
+    },
+
     // AUDIO
     addaudio: function(){
         let thisclass = this;
@@ -142,12 +208,12 @@ KGames.MemoryGame.prototype = {
                             delay: thisclass.CONFIG.SOUNDS.INTRO.END_DELAY,               
                             callback:()=>{
                                 thisclass.introsnd_tmr = thisclass.cleartimer(thisclass.introsnd_tmr);
-                                // START GAME
+                                thisclass.gamestart_bol = true;
                             },
                             loop: false,
                         });
                     }else{
-                        // START GAME
+                        thisclass.gamestart_bol = true;
                     }
                 }
             });
@@ -162,12 +228,12 @@ KGames.MemoryGame.prototype = {
                             delay: thisclass.CONFIG.SOUNDS.CHALLENGE_INTRO.END_DELAY,               
                             callback:()=>{
                                 thisclass.introsnd_tmr = thisclass.cleartimer(thisclass.introsnd_tmr);
-                                // START GAME
+                                thisclass.gamestart_bol = true;
                             },
                             loop: false,
                         });
                     }else{
-                        // START GAME
+                        thisclass.gamestart_bol = true;
                     }
                 }
             });
@@ -345,6 +411,7 @@ KGames.MemoryGame.prototype = {
             if(idatavl != null){
                 for(let j=0; j<this.totalcard_val; j++){
                     cardarr[ j ] = ["image", idatavl[icnt] || "", icnt];
+                    icnt = icnt + 1;
                     if(icnt >= Global.GetLength(idatavl)){
                         icnt = 0;
                     }
@@ -423,14 +490,16 @@ KGames.MemoryGame.prototype = {
     createcard: function(cdata){
         let cardctr = this.add.container();
             let boxsize_val = this.CONFIG.BOX.SIZE || 0.5;
+            let letdata = Global.GetLetterData(TDict,cdata[1]);
+            //DOWN IMAGE
             let downtile_img = this.add.image(0,0,this.CONFIG.ID+"-"+this.CONFIG.BOX.DOWN_IMG.ID);
             downtile_img.setScale(this.bg_img.displayHeight * boxsize_val);
             cardctr.add(downtile_img);
+            //CONTENT
             if(cdata[0] == "text"){
-                let let_str = Global.GetLetterText(TDict,cdata[1]);
                 let fontsize = this.CONFIG.BOX.FONT.SIZE || 60;
                 fontsize = Math.floor(downtile_img.displayHeight * fontsize);
-                let label_btxt = this.add.bitmapText(0, 0, (this.CONFIG.ID+"-"+this.CONFIG.BOX.FONT.ID), let_str, fontsize);
+                let label_btxt = this.add.bitmapText(0, 0, (this.CONFIG.ID+"-"+this.CONFIG.BOX.FONT.ID), letdata["LETTER"], fontsize);
                 label_btxt.setOrigin(0.5);
                 label_btxt.setTintFill(0x000000);
                 if(this.CONFIG.BOX.FONT.COLOR != null){
@@ -440,11 +509,14 @@ KGames.MemoryGame.prototype = {
                 label_btxt.displayHeight = label_btxt.height;
                 cardctr.add(label_btxt);
             }else if(cdata[0] == "image"){
-
+                //
             }
+            //TOP IMAGE
             let toptile_img = this.add.image(0,0,this.CONFIG.ID+"-"+this.CONFIG.BOX.TOP_IMG.ID);
             toptile_img.setScale(this.bg_img.displayHeight * boxsize_val);
             cardctr.add(toptile_img);
+            //SOUND
+            cardctr.snd = this.sound.add(this.CONFIG.ID+"-"+"LETTER-SND"+letdata["ID"]);
         return cardctr;
     },
 
@@ -465,6 +537,16 @@ KGames.MemoryGame.prototype = {
             this.cards_ctr.add(card);
             //PROPERTY
             card.index = carddata[ccnt][2] || 0;
+            //METHOD
+            card.playsnd = function(flag){
+                if(this.snd){
+                    if(flag){
+                        this.snd.play();
+                    }else{
+                        this.snd.stop();
+                    }
+                }
+            };
             //CARD BOUNDS
             bounds = card.getBounds();
             card.setPosition(cx + bounds.width * 0.5, cy + bounds.height * 0.5);
@@ -492,7 +574,7 @@ KGames.MemoryGame.prototype = {
         for(let v=0; v<this.cards_ctr.length; v++){
             this.cards_ctr.getAt(v).setPosition(positions[v][0],positions[v][1])
         }
-        //RESET VARIABLES
+        //CLEAR VARIABLES
         bounds, space_val, ccnt = null, null, null;
         cx, cy, gridsize, cardsbounds = null, null, null, null;
         carddata, cardpairs, taskdata = null, null, null;
@@ -502,24 +584,59 @@ KGames.MemoryGame.prototype = {
     enableinteractive: function(object){
         let thisclass = this;
         object.on('pointerdown',function(pointer, dragX, dragY, event){
-            thisclass.active_card = this;
-        });
-        object.on('pointerup',function(pointer, dragX, dragY, event){
-            if(thisclass.active_card != null && thisclass.active_card == this){
-                if(thisclass.first_card == null){
-                    thisclass.first_card = this;
-                    this.last.alpha = 0.01;
-                }else if(thisclass.first_card != this){
-                    if(thisclass.second_card == null){
-                        thisclass.second_card = this;
-                        this.last.alpha = 0.01;
-                        thisclass.checkresult();
-                    }
-                }
-            }else{
-                thisclass.active_card = null;
+            if(thisclass.gamestart_bol){
+                thisclass.active_card = this;
             }
         });
+        object.on('pointerup',function(pointer, dragX, dragY, event){
+            if(thisclass.gamestart_bol){
+                thisclass.stopallsnd();
+                if(thisclass.active_card != null && thisclass.active_card == this){
+                    if(thisclass.first_card == null){
+                        thisclass.first_card = this;
+                        thisclass.first_card.last.alpha = 0.01;
+                        thisclass.first_card.playsnd(true);
+                    }else if(thisclass.first_card != this){
+                        if(thisclass.second_card == null){
+                            thisclass.second_card = this;
+                            thisclass.second_card.last.alpha = 0.01;
+                            thisclass.second_card.playsnd(true);
+                            thisclass.checkresult();
+                        }
+                    }
+                }else{
+                    thisclass.active_card = null;
+                }
+            }
+        });
+    },
+
+    disableinteractive: function(){
+        if(this.cards_ctr && this.cards_ctr.length > 0){
+            for(let i=0; i<this.cards_ctr.length; i++){
+                this.cards_ctr.getAt(i).removeInteractive();
+            }
+        }
+    },
+
+    //CHECK GAME START
+    checkgamestart: function(){
+        let flag = true;
+        if(this.challengemode_bol){
+            if(this.CONFIG.SOUNDS.CHALLENGE_INTRO){
+                if(this.CONFIG.SOUNDS.CHALLENGE_INTRO.FORCE_PLAY){
+                    flag = false;
+                }
+            }
+        }else{
+            if(this.CONFIG.SOUNDS.INTRO){
+                if(this.CONFIG.SOUNDS.INTRO.FORCE_PLAY){
+                    flag = false;
+                }
+            }
+        }
+        this.gamestart_bol = flag;
+        this.startgametimer();
     },
 
     //RESET OPEN CARDS
@@ -544,6 +661,8 @@ KGames.MemoryGame.prototype = {
                 //CORRECT FOUND
                 this.cardopened_val ++;
                 this.playrightsnd();
+                //this.playcorrectsnd();
+                this.calculatescore();
                 let cardmat = this.second_card.getWorldTransformMatrix();
                 this.showsparkle(true,{x: cardmat.getX(0,0), y: cardmat.getY(0,0)});
                 //RESET
@@ -562,10 +681,12 @@ KGames.MemoryGame.prototype = {
                     //GAME END
                     console.log("Game End!");
                     this.gameend_bol = true;
+                    this.delaysummary();
                 }
             }else{
                 //CLOSE CARDS
                 this.playwrongsnd();
+                //this.playincorrectsnd();
                 let cdelay = this.CONFIG.BOX.CLOSE_DELAY || 1;
                 this.cardclose_tmr = this.cleartimer(this.cardclose_tmr);
                 this.cardclose_tmr = this.time.addEvent({
@@ -580,13 +701,201 @@ KGames.MemoryGame.prototype = {
         }
     },
 
+    //Score calculation
+    calculatescore: function(){
+        this.task_score += (this.point_score * this.scoreratio_val);
+        this.main_score += this.task_score;
+    },
+
+    getscorepercent: function(){
+        let maxscore = this.cardopened_val * this.point_score;
+        let score = this.task_score;
+        Global.Log("TaskScore: "+this.task_score+" MainScore: "+this.main_score+" PointScore:"+this.point_score);
+        if(this.challengemode_bol){
+            maxscore = 1.6 * maxscore;
+            let timep = GTimer.GetTimePercent();
+            if(timep < 50){
+                score = 2 * score;
+            }else if(timep >=50 && timep < 75){
+                score = 1.5 * score;
+            }else if(timep >= 75){
+                score = 1 * score;
+            }
+        }
+        else{
+            if(this.CONFIG.SCORE.FLAG == 0){
+                score = this.point_score;
+                maxscore = this.point_score;
+            }
+        }
+        let percent = Math.floor((score/maxscore)*100);
+        Global.Log("Score: "+score+" Percentage: "+percent+" Maxscore: "+maxscore);
+        return [ score, percent ];
+    },
+
+    //SUMMARY
+    delaysummary: function(){
+        this.task_tmr = this.time.addEvent({
+            delay: APPCONFIG.SUMMARY.DELAY,               
+            callback:()=>{
+                this.loadsummary();
+            },
+            loop: false,
+        });
+    },
+
+    loadsummary: function(){
+        let taskscores = this.getscorepercent();
+        if(this.CONFIG.SCORE.FLAG == 0){
+            if(this.game_data.task < this.game_data.tottask){
+                Global.Log("Loading next task");
+                this.loadnexttask();
+            }else{
+                this.scene.launch('summary',{
+                    score: taskscores[0], 
+                    scene: this, 
+                    last: true,
+                    percent: taskscores[1],
+                    flag: this.challengeflag_val,
+                    cflag: this.challengelast_bol,
+                    showcelebration: this.showceleb_bol
+                });
+            }
+        }else if(this.CONFIG.SCORE.FLAG == 1){
+            let islast = false;
+            if(this.game_data.task >= this.game_data.tottask){
+                islast = true;
+            }
+            this.scene.launch('summary',{
+                score: taskscores[0], 
+                scene: this, 
+                last: islast,
+                percent: taskscores[1],
+                flag: this.challengeflag_val,
+                cflag: this.challengelast_bol,
+                showcelebration: this.showceleb_bol
+            });
+        }
+    },
+
+    //TASK CLEAR & LOAD NEXT
+    clearstage: function(){
+        this.cards_ctr.removeAll(true);
+        this.cards_ctr.destroy();
+    },
+
+    incrementtask: function(){
+        this.game_data.task = this.game_data.task + 1;
+    },
+
+    resettask: function(){
+        this.game_data.task = 1;
+        this.task_score = 0;
+        this.scoreratio_val = 1;
+        this.timer_ctr.show(false);
+    },
+
+    resetvariable: function(){
+        this.gameend_bol = false;
+        this.challengelast_bol = false;
+        this.gametimerend_bol = false;
+        this.gametimermode_bol = false;
+        this.gamereplay_bol = false;
+    },
+
+    loadnexttask: function(){
+        if(this.game_data.task >= this.game_data.tottask){
+            //
+        }else{
+            GTimer.Reset();
+            this.stoptween();
+            this.stoptimer();
+            this.stopallsnd({
+                stopbg: true,
+                stopright: true,
+                stopceleb: true
+            });
+            this.clearstage();
+            this.resettask();
+            this.resetvariable();
+            this.incrementtask();
+            this.playbgsnd();
+            this.creatememorygrid();
+            this.checktimermode();
+            this.checkgamestart();
+        }
+    },
+
+    replaytask: function(params){
+        if(params && params.chareset){
+            this.resetchallenge();
+        }
+        GTimer.Reset();
+        this.stoptimer();
+        this.stopgametimer();
+        this.stoptween();
+        this.stopallsnd({
+            stopbg: true,
+            stopright: true,
+            stopceleb: true
+        });
+        this.clearstage();
+        this.resettask();
+        this.resetvariable();
+        this.creatememorygrid();
+        this.playbgsnd();
+        this.playintrosnd();
+        this.checktimermode();
+        this.checkgamestart();
+    },
+
     //CHALLENGE
+    incrementchallenge: function(){
+        this.challengernd_val ++;
+    },
+
+    resetchallenge: function(){
+        this.challengernd_val = 0;
+        this.challengemode_bol = false;
+    },
+
     challengetimeend: function(){
-        
+        this.stoptween();
+        this.stoptimer();
+        this.stopallsnd({
+            stopbg: true,
+            stopright: true,
+            stopceleb: true
+        });
+        this.gameend_bol = true;
+        this.gametimerend_bol = true;
+        this.disableinteractive();
+        this.loadsummary();
     },
 
     startchallenge: function(params){
         this.challengemode_bol = params.flag;
+        if(params.flag != null && params.flag){
+            this.incrementchallenge();
+            if(this.CONFIG.CHALLENGE && this.CONFIG.CHALLENGE.ROUNDS){
+                let chtime = this.CONFIG.CHALLENGE.ROUNDS["ROUND"+this.challengernd_val];
+                if(chtime){
+                    this.replaytask();
+                    this.timer_ctr.show(true);
+                    GTimer.UpdateTime(chtime);
+                }
+            }
+            if (this.challengernd_val >= this.challengerndtot_val){
+                Global.Log("Last Challenge!");
+                this.challengelast_bol = true;
+            }   
+        }else if(params.init != null){
+            if(params.time != null){
+                this.gametimermode_bol = true;
+                this.timer_ctr.show(true);
+                GTimer.UpdateTime(params.time);
+            }
+        }
     },
 
     checktimermode: function(){
@@ -614,14 +923,7 @@ KGames.MemoryGame.prototype = {
 
     //Preload function
     preload: function(){
-        this.applang_val = this.CONFIG.LANG || "";
-        this.applang_val = this.applang_val.toLowerCase();
-        if(this.applang_val != null && this.applang_val != ""){
-            this.load.script('TDictJS', "scripts/dictionary/letter_"+(this.applang_val)+".js");
-            this.load.script('TDataJS', 'scripts/data/letter_'+(this.applang_val)+'.js');
-            this.load.script('IDictJS', 'scripts/dictionary/image_'+(this.applang_val)+'.js');
-            this.load.script('IDataJS', 'scripts/data/image_'+(this.applang_val)+'.js');
-        }
+        
     },
 
     //init function
@@ -639,6 +941,7 @@ KGames.MemoryGame.prototype = {
         this.playbgsnd();
         this.playintrosnd();
         this.checktimermode();
+        this.checkgamestart();
     },
 
     //update function
