@@ -537,6 +537,7 @@ KGames.MemoryGame.prototype = {
             this.cards_ctr.add(card);
             //PROPERTY
             card.index = carddata[ccnt][2] || 0;
+            card.opened = false;
             //METHOD
             card.playsnd = function(flag){
                 if(this.snd){
@@ -584,7 +585,7 @@ KGames.MemoryGame.prototype = {
     enableinteractive: function(object){
         let thisclass = this;
         object.on('pointerdown',function(pointer, dragX, dragY, event){
-            if(thisclass.gamestart_bol){
+            if(thisclass.gamestart_bol && !this.opened){
                 thisclass.active_card = this;
             }
         });
@@ -594,11 +595,13 @@ KGames.MemoryGame.prototype = {
                 if(thisclass.active_card != null && thisclass.active_card == this){
                     if(thisclass.first_card == null){
                         thisclass.first_card = this;
+                        thisclass.first_card.opened = true;
                         thisclass.first_card.last.alpha = 0.01;
                         thisclass.first_card.playsnd(true);
                     }else if(thisclass.first_card != this){
                         if(thisclass.second_card == null){
                             thisclass.second_card = this;
+                            thisclass.second_card.opened = true;
                             thisclass.second_card.last.alpha = 0.01;
                             thisclass.second_card.playsnd(true);
                             thisclass.checkresult();
@@ -644,9 +647,11 @@ KGames.MemoryGame.prototype = {
         if(flag){
             if(this.first_card != null){
                 this.first_card.last.alpha = 1;
+                this.first_card.opened = false;
             }
             if(this.second_card != null){
                 this.second_card.last.alpha = 1;
+                this.second_card.opened = false;
             }
         }
         this.second_card = null;
