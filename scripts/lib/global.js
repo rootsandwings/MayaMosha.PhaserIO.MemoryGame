@@ -38,6 +38,13 @@ Global.GetLetterData = function(dict, txt){
     return txt;
 }
 
+Global.GetImageData = function(dict, txt){
+    if( dict != null && dict[txt] != null ){
+        return dict[txt];
+    }
+    return txt;
+}
+
 Global.CloneArray = function(array){
     let clone = array.map(a => {return {...a}});
     return clone;

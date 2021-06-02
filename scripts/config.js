@@ -36,7 +36,12 @@ const APPCONFIG = {
         POS:{
             X: 0.82,
             Y: 0.10,
-        }
+        },
+        FONT: {
+            ID: "ROBOTO-BOLD",
+            PATH: "assets/fonts/Roboto_Bold.png",
+            XML: "assets/fonts/Roboto_Bold.xml"
+        },
     },
     //GAME SPARKLE
     SPARKLE: {

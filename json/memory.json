@@ -52,7 +52,7 @@
         },
 
         "SCORE":{
-            "FLAG": 0,
+            "FLAG": 1,
             "POINTS": 10
         },
 
@@ -66,7 +66,7 @@
 
         "GTIMER":{
             "FLAG": true,
-            "TIME": 60
+            "TIME": 10
         },
 
         "CELEBRATION":{
@@ -80,8 +80,9 @@
         "TASK1":{
             "LINE": 1,
             "TEXT": true,
-            "IMAGE": false,
+            "IMAGE": true,
             "TOTAL_CARD": 6,
+            "TEXT_LIMIT": 5,
             "GRID": "3X4",
             "SIZE": 0.0005
         },

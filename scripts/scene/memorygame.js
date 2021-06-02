@@ -377,9 +377,12 @@ KGames.MemoryGame.prototype = {
             let tdatavl = TData["line"+lineval];
             if(idatavl != null && tdatavl != null){
                 let icnt = 0, lcnt = 0;
+                let textlimit = Math.ceil(this.totalcard_val/2);
+                if(tdata.TEXT_LIMIT != null){ textlimit = tdata.TEXT_LIMIT }
                 for(let j=0; j<this.totalcard_val; j++){
-                    if( j >= Math.ceil(this.totalcard_val/2) ){
+                    if( j >= textlimit ){
                         cardarr[ j ] = ["image", idatavl[icnt] || "", icnt];
+                        console.log(icnt)
                         icnt = icnt + 1;
                         if(icnt >= Global.GetLength(idatavl)){
                             icnt = 0;
@@ -462,8 +465,9 @@ KGames.MemoryGame.prototype = {
             tframe.setScale((1/tframe.displayWidth) * this.swidth_val * 0.05);
             this.timer_ctr.add(tframe);
             //LABEL
-            let fntsize = 0.6 * tframe.displayHeight + "px"
-            let txtlbl = this.add.text(0, 0, "00", { fontFamily: 'Arial', fontSize: fntsize, fill: '#000000', align: 'center', });
+            let fntsize = Math.floor(0.5 * tframe.displayHeight);
+            let txtlbl = this.add.bitmapText(0, 0, APPCONFIG.ID+"-"+APPCONFIG.GTIMER.FONT.ID, "00", fntsize);
+            txtlbl.setTintFill(0x000000);
             txtlbl.setOrigin(0.5);
             this.timer_ctr.add(txtlbl);
         this.timer_ctr.setPosition(this.swidth_val * POS.X, this.sheight_val * POS.Y);
@@ -490,16 +494,17 @@ KGames.MemoryGame.prototype = {
     createcard: function(cdata,boxsize_val){
         let cardctr = this.add.container();
             if(boxsize_val == null){ boxsize_val = 0.0005 }
-            let letdata = Global.GetLetterData(TDict,cdata[1]);
+            let carddetails = null;
             //DOWN IMAGE
             let downtile_img = this.add.image(0,0,this.CONFIG.ID+"-"+this.CONFIG.BOX.DOWN_IMG.ID);
             downtile_img.setScale(this.bg_img.displayHeight * boxsize_val);
             cardctr.add(downtile_img);
             //CONTENT
             if(cdata[0] == "text"){
+                carddetails = Global.GetLetterData(TDict,cdata[1]);
                 let fontsize = this.CONFIG.BOX.FONT.SIZE || 60;
                 fontsize = Math.floor(downtile_img.displayHeight * fontsize);
-                let label_btxt = this.add.bitmapText(0, 0, (this.CONFIG.ID+"-"+this.CONFIG.BOX.FONT.ID), letdata["LETTER"], fontsize);
+                let label_btxt = this.add.bitmapText(0, 0, (this.CONFIG.ID+"-"+this.CONFIG.BOX.FONT.ID), carddetails["LETTER"], fontsize);
                 label_btxt.setOrigin(0.5);
                 label_btxt.setTintFill(0x000000);
                 if(this.CONFIG.BOX.FONT.COLOR != null){
@@ -508,15 +513,26 @@ KGames.MemoryGame.prototype = {
                 label_btxt.displayWidth = label_btxt.width;
                 label_btxt.displayHeight = label_btxt.height;
                 cardctr.add(label_btxt);
+                fontsize = null;
             }else if(cdata[0] == "image"){
-                //
+                carddetails = Global.GetImageData(IDict,cdata[1]);
+                let card_img = this.add.image(0, 0, (this.CONFIG.ID+"-"+"IMAGE"+carddetails["ID"]));
+                let sclvl = Math.max(downtile_img.displayWidth/card_img.displayWidth, downtile_img.displayHeight/card_img.displayWidth);
+                card_img.setScale(sclvl, sclvl);
+                card_img.setOrigin(0.5);
+                cardctr.add(card_img);
+                sclvl = null;
             }
             //TOP IMAGE
             let toptile_img = this.add.image(0,0,this.CONFIG.ID+"-"+this.CONFIG.BOX.TOP_IMG.ID);
             toptile_img.setScale(this.bg_img.displayHeight * boxsize_val);
             cardctr.add(toptile_img);
             //SOUND
-            cardctr.snd = this.sound.add(this.CONFIG.ID+"-"+"LETTER-SND"+letdata["ID"]);
+            if(carddetails){
+                if(carddetails["AUDIO"] && carddetails["AUDIO"] != null){
+                    cardctr.snd = this.sound.add(this.CONFIG.ID+"-"+"LETTER-SND"+carddetails["ID"]);
+                }
+            }
         return cardctr;
     },
 
@@ -666,7 +682,7 @@ KGames.MemoryGame.prototype = {
                 //CORRECT FOUND
                 this.cardopened_val ++;
                 this.playrightsnd();
-                //this.playcorrectsnd();
+                this.playcorrectsnd();
                 this.calculatescore();
                 let cardmat = this.second_card.getWorldTransformMatrix();
                 this.showsparkle(true,{x: cardmat.getX(0,0), y: cardmat.getY(0,0)});
@@ -692,7 +708,7 @@ KGames.MemoryGame.prototype = {
             }else{
                 //CLOSE CARDS
                 this.playwrongsnd();
-                //this.playincorrectsnd();
+                this.playincorrectsnd();
                 let cdelay = this.CONFIG.BOX.CLOSE_DELAY || 1;
                 this.cardclose_tmr = this.cleartimer(this.cardclose_tmr);
                 this.cardclose_tmr = this.time.addEvent({
@@ -823,6 +839,7 @@ KGames.MemoryGame.prototype = {
                 stopright: true,
                 stopceleb: true
             });
+            this.resetopencard(true);
             this.clearstage();
             this.resettask();
             this.resetvariable();
@@ -847,6 +864,7 @@ KGames.MemoryGame.prototype = {
             stopright: true,
             stopceleb: true
         });
+        this.resetopencard(true);
         this.clearstage();
         this.resettask();
         this.resetvariable();

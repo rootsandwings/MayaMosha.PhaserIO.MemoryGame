@@ -38,6 +38,9 @@ KGames.Preloader.prototype = {
             //PRELOAD GTIMER
             if(APPCONFIG.GTIMER){
                 this.load.image(APPCONFIG.ID+"-"+APPCONFIG.GTIMER.ID, APPCONFIG.GTIMER.PATH);
+                if(APPCONFIG.GTIMER.FONT){
+                    this.load.bitmapFont(APPCONFIG.ID+"-"+APPCONFIG.GTIMER.FONT.ID, APPCONFIG.GTIMER.FONT.PATH, APPCONFIG.GTIMER.FONT.XML);
+                }
             }
             //SUMMARY
             if(APPCONFIG.SUMMARY){
@@ -138,11 +141,17 @@ KGames.Preloader.prototype = {
         let CONFIG = gamejson.CONFIG;
         if(TDict && IDict){
             for(const key in TDict){
-                this.load.audio(CONFIG.ID+"-"+"LETTER-SND"+TDict[key].ID,TDict[key].AUDIO);
+                if(TDict[key].AUDIO && TDict[key].AUDIO != ""){
+                    this.load.audio(CONFIG.ID+"-"+"LETTER-SND"+TDict[key].ID,TDict[key].AUDIO);
+                }
             }
             for(const key in IDict){
-                this.load.image(CONFIG.ID+"-"+"IMAGE"+IDict[key].ID,IDict[key].IMAGE);
-                this.load.audio(CONFIG.ID+"-"+"IMAGE-SND"+IDict[key].ID,IDict[key].AUDIO);
+                if(IDict[key].IMAGE && IDict[key].IMAGE != ""){
+                    this.load.image(CONFIG.ID+"-"+"IMAGE"+IDict[key].ID,IDict[key].IMAGE);
+                }
+                if(IDict[key].AUDIO && IDict[key].AUDIO != ""){
+                    this.load.audio(CONFIG.ID+"-"+"IMAGE-SND"+IDict[key].ID,IDict[key].AUDIO);
+                }
             }
             this.load.start();
         }else{
