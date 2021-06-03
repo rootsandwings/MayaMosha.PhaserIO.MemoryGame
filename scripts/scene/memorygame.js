@@ -39,6 +39,7 @@ KGames.MemoryGame.prototype = {
         this.intro_snd = null;
         this.bg_snd = null;
         this.cintro_snd = null;
+        this.taskcomplete_snd = null;
 
         //Animation
         this.sparkle_anim = null;
@@ -242,6 +243,20 @@ KGames.MemoryGame.prototype = {
         if(this.CONFIG.SOUNDS.BGMUSIC){ 
             this.bg_snd = this.sound.add(this.CONFIG.ID+"-"+this.CONFIG.SOUNDS.BGMUSIC.ID);
         }
+        //CHECK TASK COMPLETE SOUND
+        if(this.CONFIG.SOUNDS.TASK_COMPLETE){ 
+            this.taskcomplete_snd = this.sound.add(this.CONFIG.ID+"-"+this.CONFIG.SOUNDS.TASK_COMPLETE.ID);
+            this.taskcomplete_snd.on('complete',function(){
+                if(thisclass.gameend_bol){
+                    thisclass.loadnexttask();
+                }
+            });
+            this.taskcomplete_snd.on('stop',function(){
+                if(thisclass.gameend_bol){
+                    thisclass.loadnexttask();
+                }
+            });
+        }
     },
 
     playcorrectsnd: function(){
@@ -348,6 +363,20 @@ KGames.MemoryGame.prototype = {
         }
     },
 
+    playtaskcompletesnd: function(){
+        if(this.taskcomplete_snd){
+            this.taskcomplete_snd.play();
+        }else{
+            this.loadnexttask();
+        }
+    },
+
+    stoptaskcompletesnd: function(){
+        if(this.taskcomplete_snd){
+            this.taskcomplete_snd.stop();
+        }
+    },
+
     stopallsnd: function(params){
         if(params && params.stopbg){
             this.stopbgsnd();
@@ -361,6 +390,7 @@ KGames.MemoryGame.prototype = {
         }
         this.stopwrongsnd();
         this.stopintrosnd();
+        this.stoptaskcompletesnd();
     },
 
     // Card data generation
@@ -533,6 +563,23 @@ KGames.MemoryGame.prototype = {
                     cardctr.snd = this.sound.add(this.CONFIG.ID+"-"+"LETTER-SND"+carddetails["ID"]);
                 }
             }
+            //PROPERTY
+            cardctr.ctype = cdata[0];
+            cardctr.opened = false;
+            cardctr.index = 0;
+            if(carddetails){
+                cardctr.index = carddetails["ID"] || 0;
+            }
+            //METHOD
+            cardctr.playsnd = function(flag){
+                if(this.snd){
+                    if(flag){
+                        this.snd.play();
+                    }else{
+                        this.snd.stop();
+                    }
+                }
+            };
         return cardctr;
     },
 
@@ -551,19 +598,6 @@ KGames.MemoryGame.prototype = {
         for(let v=0; v<cardpairs; v++){
             let card = this.createcard(carddata[ccnt],taskdata.SIZE);
             this.cards_ctr.add(card);
-            //PROPERTY
-            card.index = carddata[ccnt][2] || 0;
-            card.opened = false;
-            //METHOD
-            card.playsnd = function(flag){
-                if(this.snd){
-                    if(flag){
-                        this.snd.play();
-                    }else{
-                        this.snd.stop();
-                    }
-                }
-            };
             //CARD BOUNDS
             bounds = card.getBounds();
             card.setPosition(cx + bounds.width * 0.5, cy + bounds.height * 0.5);
@@ -678,7 +712,7 @@ KGames.MemoryGame.prototype = {
     checkresult: function(){
         let thisclass = this;
         if(this.first_card != null && this.second_card != null){
-            if(this.first_card.index == this.second_card.index){
+            if(this.first_card.index == this.second_card.index && this.first_card.ctype == this.second_card.ctype){
                 //CORRECT FOUND
                 this.cardopened_val ++;
                 this.playrightsnd();
@@ -771,7 +805,8 @@ KGames.MemoryGame.prototype = {
         if(this.CONFIG.SCORE.FLAG == 0){
             if(this.game_data.task < this.game_data.tottask){
                 Global.Log("Loading next task");
-                this.loadnexttask();
+                this.stopallsnd({ stopbg: false, stopright: true, stopceleb: true });
+                this.playtaskcompletesnd();
             }else{
                 this.scene.launch('summary',{
                     score: taskscores[0], 
