@@ -6,8 +6,9 @@ KGames.Preloader.prototype = {
     //DECLARE VARIABLE
     declarevariable: function(){
         this.applang = null;
-        this.preloadcount = 0;
         this.preloadtotal = 2;
+        this.progress_val = 0;
+        this.progresspercent_val = 0;
     },
 
     //COMMON CONFIG
@@ -192,10 +193,10 @@ KGames.Preloader.prototype = {
         let thisclass = this;
 
         this.load.on('progress', function (value) {
-            let progress_val = Math.floor((value * 100) * ((thisclass.preloadcount+1)/thisclass.preloadtotal));
-            //Global.Log("PRELOAD: PROGRESS - "+progress_val);
-            thisclass.loadinglbl_txt.text = "Loading.. "+progress_val+"%";
-            thisclass.progressbar_shp.scaleX = (progress_val/100);
+            thisclass.progress_val = Math.floor((value * 100) * 0.5) + thisclass.progresspercent_val;
+            //Global.Log("PRELOAD: PROGRESS - "+thisclass.progress_val);
+            thisclass.loadinglbl_txt.text = "Loading.. "+thisclass.progress_val+"%";
+            thisclass.progressbar_shp.scaleX = (thisclass.progress_val/100);
         });
                     
         this.load.on('fileprogress', function (file) {
@@ -203,9 +204,9 @@ KGames.Preloader.prototype = {
         });
 
         this.load.on('complete', function () {
-            Global.Log('PRELOAD: COMPLETE');
-            thisclass.preloadcount = thisclass.preloadcount + 1
-            if(thisclass.preloadcount >= thisclass.preloadtotal){
+            //Global.Log('PRELOAD: COMPLETE');
+            thisclass.progresspercent_val = 50;
+            if(thisclass.progress_val >= 100){
                 thisclass.load.off('progress');;
                 thisclass.load.off('fileprogress');
                 thisclass.load.off('complete');
