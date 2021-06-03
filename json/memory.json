@@ -31,6 +31,7 @@
                 "COLOR": "#000000",
                 "SIZE": 0.5
             },
+            "OPEN_TIME": 0.2,
             "CLOSE_DELAY": 1,
             "CORRECT_DELAY": 1
         },

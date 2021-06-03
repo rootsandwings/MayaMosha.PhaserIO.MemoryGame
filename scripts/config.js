@@ -3,6 +3,7 @@ const APPCONFIG = {
     //MENU BUTTONS
     MENU: {
         BTN: {
+            ANIM_TIME: 0.1,
             HOME:{
                 ID: "MENU-HOME",
                 PATH: 'assets/images/btn/home.png',

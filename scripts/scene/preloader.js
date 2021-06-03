@@ -16,7 +16,9 @@ KGames.Preloader.prototype = {
             //MENU BTN
             if(APPCONFIG.MENU && APPCONFIG.MENU.BTN){
                 for (const key in APPCONFIG.MENU.BTN) {
-                    this.load.image(APPCONFIG.ID+"-"+APPCONFIG.MENU.BTN[key].ID, APPCONFIG.MENU.BTN[key].PATH);
+                    if(APPCONFIG.MENU.BTN[key].ID){
+                        this.load.image(APPCONFIG.ID+"-"+APPCONFIG.MENU.BTN[key].ID, APPCONFIG.MENU.BTN[key].PATH);
+                    }
                 }
             }
             //SPARKLE ANIM

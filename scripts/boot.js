@@ -16,8 +16,10 @@ window.onload = function(){
             default: 'arcade'
         },
         fps: {
+            min: 30,
             target: 60,
         },
+        autoFocus: true,
         transparent: true,
         gamejson: null
     }

@@ -21,6 +21,9 @@ KGames.MemoryGame.prototype = {
         //Image
         this.bg_img = null;
 
+        //Button
+        this.active_btn = null;
+
         //Value
         this.swidth_val = this.game.config.width; // stage width
         this.sheight_val = this.game.config.height; // stage height
@@ -32,6 +35,8 @@ KGames.MemoryGame.prototype = {
         this.challengeflag_val = 0;
         this.challengerndtot_val = 0;
         this.challengernd_val = 0;
+        this.cardopentime_val = 400;
+        this.btnanimtime_val = 200;
 
         //Sound
         this.right_snd = null;
@@ -77,12 +82,24 @@ KGames.MemoryGame.prototype = {
             }
         }
 
+        if(this.CONFIG.BOX){
+            if(this.CONFIG.BOX.OPEN_TIME){
+                this.cardopentime_val = this.CONFIG.BOX.OPEN_TIME * 1000;
+            }
+        }
+
         if(this.CONFIG.CHALLENGE != null){
             if(this.CONFIG.CHALLENGE.FLAG != null){
                 this.challengeflag_val = this.CONFIG.CHALLENGE.FLAG;
             }
             if(this.CONFIG.CHALLENGE.ROUNDS != null){
                 this.challengerndtot_val = Global.GetLength(this.CONFIG.CHALLENGE.ROUNDS);
+            }
+        }
+
+        if(APPCONFIG.MENU.BTN){
+            if(APPCONFIG.MENU.BTN.ANIM_TIME){
+                this.btnanimtime_val = APPCONFIG.MENU.BTN.ANIM_TIME * 1000;
             }
         }
 
@@ -466,23 +483,71 @@ KGames.MemoryGame.prototype = {
         let thisclass = this;
         if(APPCONFIG.MENU){
             for (const key in APPCONFIG.MENU.BTN) {
-                let ID = APPCONFIG.MENU.BTN[key].ID;
-                let POS = APPCONFIG.MENU.BTN[key].POS;
-                this[key.toLowerCase()+"_btn"] = this.add.image(0, 0, (APPCONFIG.ID+"-"+ID));
-                this[key.toLowerCase()+"_btn"].ID = ID;
-                this[key.toLowerCase()+"_btn"].setScale((1/this[key.toLowerCase()+"_btn"].displayWidth) * this.swidth_val * 0.05);
-                this[key.toLowerCase()+"_btn"].setPosition(
-                    this.swidth_val * POS.X,
-                    this.sheight_val * POS.Y
-                );
-                this[key.toLowerCase()+"_btn"].setInteractive();
-                this[key.toLowerCase()+"_btn"].on('pointerup',function(pointer, px, py, event){
-                    Global.Log("BTN: "+(this.ID));
-                    if(this.ID == "MENU-REPLAY"){
-                        thisclass.gamereplay_bol = true;
-                        thisclass.replaytask({chareset: true});
+                if(APPCONFIG.MENU.BTN[key].ID){
+                    let ID = APPCONFIG.MENU.BTN[key].ID;
+                    let POS = APPCONFIG.MENU.BTN[key].POS;
+                    this[key.toLowerCase()+"_btn"] = this.add.image(0, 0, (APPCONFIG.ID+"-"+ID));
+                    this[key.toLowerCase()+"_btn"].ID = ID;
+                    this[key.toLowerCase()+"_btn"].isdown = false;
+                    //BTN SCALE
+                    this[key.toLowerCase()+"_btn"].scl = (1/this[key.toLowerCase()+"_btn"].displayWidth) * this.swidth_val * 0.05;
+                    this[key.toLowerCase()+"_btn"].setScale(this[key.toLowerCase()+"_btn"].scl);
+                    this[key.toLowerCase()+"_btn"].setPosition(
+                        this.swidth_val * POS.X,
+                        this.sheight_val * POS.Y
+                    );
+                    this[key.toLowerCase()+"_btn"].ondown = function(){
+                        if(this.scaleX != (this.scl * 0.92)){
+                            this.tween1 = thisclass.cleartween(this.tween1);
+                            this.tween1 = thisclass.tweens.add({
+                                targets: this,
+                                scaleX: (this.scl * 0.92),
+                                scaleY: (this.scl * 0.92),
+                                duration: thisclass.btnanimtime_val,
+                                ease: 'Linear',
+                            });
+                        }
                     }
-                });
+                    this[key.toLowerCase()+"_btn"].onup = function(){
+                        if(this.scaleX != (this.scl * 1.0)){
+                            this.tween2 = thisclass.cleartween(this.tween2);
+                            this.tween2 = thisclass.tweens.add({
+                                targets: this,
+                                scaleX: (this.scl * 1.0),
+                                scaleY: (this.scl * 1.0),
+                                duration: thisclass.btnanimtime_val,
+                                ease: 'Linear',
+                            });
+                        }
+                    }
+                    this[key.toLowerCase()+"_btn"].setInteractive();
+                    this[key.toLowerCase()+"_btn"].on('pointerdown',function(pointer, px, py, event){
+                        thisclass.active_btn = this;
+                        this.isdown = true;
+                        this.ondown();
+                    });
+                    this[key.toLowerCase()+"_btn"].on('pointerover',function(pointer, px, py, event){
+                        if(thisclass.active_btn == this){
+                            this.ondown();
+                        }
+                    });
+                    this[key.toLowerCase()+"_btn"].on('pointerout',function(pointer, px, py, event){
+                        this.onup();
+                    });
+                    this[key.toLowerCase()+"_btn"].on('pointerup',function(pointer, px, py, event){
+                        this.onup();
+                        if(this.isdown){
+                            if(thisclass.active_btn != null && thisclass.active_btn == this){
+                                Global.Log("BTN: "+(this.ID));
+                                if(this.ID == "MENU-REPLAY"){
+                                    thisclass.gamereplay_bol = true;
+                                    thisclass.replaytask({chareset: true});
+                                }
+                            }
+                        }
+                        this.isdown = false;
+                    });
+                }
             }
         }
     },
@@ -522,12 +587,16 @@ KGames.MemoryGame.prototype = {
     },
 
     createcard: function(cdata,boxsize_val){
+        let thisclass = this;
         let cardctr = this.add.container();
             if(boxsize_val == null){ boxsize_val = 0.0005 }
             let carddetails = null;
+            let sclimg_val = 1;
+            let sclbox_val = null;
             //DOWN IMAGE
+            sclbox_val = this.bg_img.displayHeight * boxsize_val;
             let downtile_img = this.add.image(0,0,this.CONFIG.ID+"-"+this.CONFIG.BOX.DOWN_IMG.ID);
-            downtile_img.setScale(this.bg_img.displayHeight * boxsize_val);
+            downtile_img.setScale(0.01, sclbox_val);
             cardctr.add(downtile_img);
             //CONTENT
             if(cdata[0] == "text"){
@@ -537,6 +606,7 @@ KGames.MemoryGame.prototype = {
                 let label_btxt = this.add.bitmapText(0, 0, (this.CONFIG.ID+"-"+this.CONFIG.BOX.FONT.ID), carddetails["LETTER"], fontsize);
                 label_btxt.setOrigin(0.5);
                 label_btxt.setTintFill(0x000000);
+                label_btxt.setScale(0.01,1);
                 if(this.CONFIG.BOX.FONT.COLOR != null){
                     label_btxt.setTintFill(Phaser.Display.Color.HexStringToColor(this.CONFIG.BOX.FONT.COLOR).color);
                 }
@@ -547,15 +617,14 @@ KGames.MemoryGame.prototype = {
             }else if(cdata[0] == "image"){
                 carddetails = Global.GetImageData(IDict,cdata[1]);
                 let card_img = this.add.image(0, 0, (this.CONFIG.ID+"-"+"IMAGE"+carddetails["ID"]));
-                let sclvl = Math.max(downtile_img.displayWidth/card_img.displayWidth, downtile_img.displayHeight/card_img.displayWidth);
-                card_img.setScale(sclvl, sclvl);
+                sclimg_val = Math.max(downtile_img.displayWidth/card_img.displayWidth, downtile_img.displayHeight/card_img.displayWidth);
+                card_img.setScale(0.01,sclimg_val);
                 card_img.setOrigin(0.5);
                 cardctr.add(card_img);
-                sclvl = null;
             }
             //TOP IMAGE
             let toptile_img = this.add.image(0,0,this.CONFIG.ID+"-"+this.CONFIG.BOX.TOP_IMG.ID);
-            toptile_img.setScale(this.bg_img.displayHeight * boxsize_val);
+            toptile_img.setScale(sclbox_val);
             cardctr.add(toptile_img);
             //SOUND
             if(carddetails){
@@ -570,6 +639,9 @@ KGames.MemoryGame.prototype = {
             if(carddetails){
                 cardctr.index = carddetails["ID"] || 0;
             }
+            cardctr.sclbox_val = sclbox_val;
+            cardctr.sclimg_val = sclimg_val;
+            sclbox_val, sclimg_val = null, null;
             //METHOD
             cardctr.playsnd = function(flag){
                 if(this.snd){
@@ -579,6 +651,66 @@ KGames.MemoryGame.prototype = {
                         this.snd.stop();
                     }
                 }
+            };
+            cardctr.open = function(){
+                cardctr.tween1 = thisclass.cleartween(cardctr.tween1);
+                cardctr.tween1 = thisclass.tweens.add({
+                    targets: this.getAt(2),
+                    scaleX: 0.01,
+                    duration: thisclass.cardopentime_val,
+                    ease: 'Linear',
+                    onComplete: function(tween, targets){
+                        targets[0].parentContainer.sendToBack(targets[0]);
+                    }
+                });
+                cardctr.tween2 = thisclass.cleartween(cardctr.tween2);
+                cardctr.tween2 = thisclass.tweens.add({
+                    targets: this.getAt(1),
+                    scaleX: this.sclimg_val,
+                    duration: thisclass.cardopentime_val,
+                    ease: 'Linear',
+                    delay: thisclass.cardopentime_val,
+                });
+                cardctr.tween3 = thisclass.cleartween(cardctr.tween3);
+                cardctr.tween3 = thisclass.tweens.add({
+                    targets: this.getAt(0),
+                    scaleX: this.sclbox_val,
+                    duration: thisclass.cardopentime_val,
+                    ease: 'Linear',
+                    delay: thisclass.cardopentime_val,
+                    onComplete: function(){
+                        if(thisclass.second_card != null){
+                            thisclass.checkresult();
+                        }
+                    }
+                });
+            };
+            cardctr.close = function(){
+                cardctr.tween4 = thisclass.cleartween(cardctr.tween4);
+                cardctr.tween4 = thisclass.tweens.add({
+                    targets: this.getAt(0),
+                    scaleX: this.sclbox_val,
+                    duration: thisclass.cardopentime_val,
+                    ease: 'Linear',
+                    delay: thisclass.cardopentime_val,
+                    onStart: function(tween, targets){
+                        targets[0].parentContainer.bringToTop(targets[0]);
+                    }
+                });
+                cardctr.tween5 = thisclass.cleartween(cardctr.tween5);
+                cardctr.tween5 = thisclass.tweens.add({
+                    targets: this.getAt(1),
+                    scaleX: 0.01,
+                    duration: thisclass.cardopentime_val,
+                    ease: 'Linear',
+                });
+                cardctr.tween6 = thisclass.cleartween(cardctr.tween6);
+                cardctr.tween6 = thisclass.tweens.add({
+                    targets: this.getAt(2),
+                    scaleX: 0.01,
+                    duration: thisclass.cardopentime_val,
+                    ease: 'Linear',
+                });
             };
         return cardctr;
     },
@@ -632,6 +764,12 @@ KGames.MemoryGame.prototype = {
         positions = null;
     },
 
+    animatecard: function(card){
+        if(card){
+            card.open();
+        }
+    },
+
     enableinteractive: function(object){
         let thisclass = this;
         object.on('pointerdown',function(pointer, dragX, dragY, event){
@@ -646,15 +784,14 @@ KGames.MemoryGame.prototype = {
                     if(thisclass.first_card == null){
                         thisclass.first_card = this;
                         thisclass.first_card.opened = true;
-                        thisclass.first_card.last.alpha = 0.01;
                         thisclass.first_card.playsnd(true);
+                        thisclass.animatecard(thisclass.first_card);
                     }else if(thisclass.first_card != this){
                         if(thisclass.second_card == null){
                             thisclass.second_card = this;
                             thisclass.second_card.opened = true;
-                            thisclass.second_card.last.alpha = 0.01;
                             thisclass.second_card.playsnd(true);
-                            thisclass.checkresult();
+                            thisclass.animatecard(thisclass.second_card);
                         }
                     }
                 }else{
@@ -668,6 +805,20 @@ KGames.MemoryGame.prototype = {
         if(this.cards_ctr && this.cards_ctr.length > 0){
             for(let i=0; i<this.cards_ctr.length; i++){
                 this.cards_ctr.getAt(i).removeInteractive();
+            }
+        }
+    },
+
+    clearcardtween: function(){
+        if(this.cards_ctr && this.cards_ctr.length > 0){
+            for(let i=0; i<this.cards_ctr.length; i++){
+                let obj = this.cards_ctr.getAt(i);
+                obj.tween1 = this.cleartimer(obj.tween1);
+                obj.tween2 = this.cleartimer(obj.tween2);
+                obj.tween3 = this.cleartimer(obj.tween3);
+                obj.tween4 = this.cleartimer(obj.tween4);
+                obj.tween5 = this.cleartimer(obj.tween5);
+                obj.tween6 = this.cleartimer(obj.tween6);
             }
         }
     },
@@ -696,11 +847,11 @@ KGames.MemoryGame.prototype = {
     resetopencard: function(flag){
         if(flag){
             if(this.first_card != null){
-                this.first_card.last.alpha = 1;
+                this.first_card.close();
                 this.first_card.opened = false;
             }
             if(this.second_card != null){
-                this.second_card.last.alpha = 1;
+                this.second_card.close();
                 this.second_card.opened = false;
             }
         }
@@ -838,6 +989,7 @@ KGames.MemoryGame.prototype = {
     //TASK CLEAR & LOAD NEXT
     clearstage: function(){
         this.disableinteractive();
+        this.clearcardtween();
         this.cards_ctr.removeAll(true);
         this.cards_ctr.destroy();
     },
@@ -860,6 +1012,8 @@ KGames.MemoryGame.prototype = {
         this.gametimermode_bol = false;
         this.gamereplay_bol = false;
         this.cardopened_val = 0;
+        this.active_btn = null;
+        this.active_card = null
     },
 
     loadnexttask: function(){
