@@ -158,7 +158,7 @@ KGames.Preloader.prototype = {
             }
             this.load.start();
         }else{
-            thisclass.scene.start('memorygame');
+            thisclass.movetoscene();
         }
     },
 
@@ -210,9 +210,15 @@ KGames.Preloader.prototype = {
                 thisclass.load.off('progress');;
                 thisclass.load.off('fileprogress');
                 thisclass.load.off('complete');
-                thisclass.scene.start('memorygame');
+                thisclass.movetoscene();
             }
         });
+    },
+
+    //MOVE TOO GAME SCENE
+    movetoscene:function(){
+        this.loadinglbl_txt.text = "Loading.. 100%";
+        this.scene.start('memorygame');
     },
 
     //Preload function

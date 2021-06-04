@@ -1,10 +1,10 @@
-// Global
+// GLOBAL
 const KGames = {}
 
-// Window load
+// WINDOW LOAD
 window.onload = function(){
     
-    //game config
+    //GAME CONFIG
     const config = {
         type: Phaser.AUTO,
         autoResize: true,
