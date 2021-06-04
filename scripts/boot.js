@@ -7,20 +7,27 @@ window.onload = function(){
     //game config
     const config = {
         type: Phaser.AUTO,
+        autoResize: true,
+        seed: [ (Date.now() * Math.random()).toString() ],
         scale: {
-            width: innerWidth,
-            height: innerHeight,
-            orientation: Phaser.Scale.Orientation.LANDSCAPE,
+            mode: Phaser.Scale.FIT,
+            width: window.innerWidth * window.devicePixelRatio,
+            height: window.innerHeight * window.devicePixelRatio,
+            autoCenter: Phaser.Scale.CENTER_BOTH,
+            zoom: 1
         },
         physics: {
-            default: 'arcade'
+            default: false,
         },
         fps: {
             min: 30,
             target: 60,
+            forceSetTimeOut: true,
+            deltaHistory: 10
         },
         autoFocus: true,
         transparent: true,
+        autoRound: false,
         gamejson: null
     }
 

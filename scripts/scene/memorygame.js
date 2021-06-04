@@ -1018,7 +1018,7 @@ KGames.MemoryGame.prototype = {
 
     loadnexttask: function(){
         if(this.game_data.task >= this.game_data.tottask){
-            //
+            this.resettask();
         }else{
             GTimer.Reset();
             this.stoptween();
@@ -1030,7 +1030,6 @@ KGames.MemoryGame.prototype = {
             });
             this.resetopencard(true);
             this.clearstage();
-            this.resettask();
             this.resetvariable();
             this.incrementtask();
             this.playbgsnd();

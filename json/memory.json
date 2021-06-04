@@ -84,16 +84,26 @@
             "TEXT": true,
             "IMAGE": true,
             "TOTAL_CARD": 6,
-            "TEXT_LIMIT": 5,
-            "GRID": "3X4",
+            "TEXT_LIMIT": 4,
+            "GRID": "2X6",
             "SIZE": 0.0005
         },
         "TASK2":{
             "LINE": 2,
             "TEXT": true,
-            "IMAGE": false,
+            "IMAGE": true,
             "TOTAL_CARD": 6,
+            "TEXT_LIMIT": 4,
             "GRID": "3X4",
+            "SIZE": 0.0005
+        },
+        "TASK3":{
+            "LINE": 3,
+            "TEXT": true,
+            "IMAGE": true,
+            "TOTAL_CARD": 6,
+            "TEXT_LIMIT": 4,
+            "GRID": "2X6",
             "SIZE": 0.0005
         }
         
