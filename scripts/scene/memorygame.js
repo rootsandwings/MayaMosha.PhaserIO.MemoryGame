@@ -917,6 +917,9 @@ KGames.MemoryGame.prototype = {
     getscorepercent: function(){
         let maxscore = this.cardopened_val * this.point_score;
         let score = this.task_score;
+        if(this.game_data.tottask > 1){
+            score = this.main_score;
+        }
         Global.Log("TaskScore: "+this.task_score+" MainScore: "+this.main_score+" PointScore:"+this.point_score);
         if(this.challengemode_bol){
             maxscore = 1.6 * maxscore;
@@ -954,7 +957,7 @@ KGames.MemoryGame.prototype = {
     loadsummary: function(){
         let taskscores = this.getscorepercent();
         if(this.CONFIG.SCORE.FLAG == 0){
-            if(this.game_data.task < this.game_data.tottask){
+            if(this.game_data.task < this.game_data.tottask && taskscores[0] > 0){
                 Global.Log("Loading next task");
                 this.stopallsnd({ stopbg: false, stopright: true, stopceleb: true });
                 this.playtaskcompletesnd();
