@@ -222,16 +222,16 @@ KGames.Summary.prototype = {
         let baserect = this.add.rectangle(0, 0, this.swidth_val, this.sheight_val);
         baserect.setPosition(this.centerx_val, this.centery_val);
         baserect.setFillStyle(0x000000);
-        baserect.alpha = APPCONFIG.SUMMARY.POSITIVE.BG_ALPHA;
+        baserect.alpha = APPCONFIG.SUMMARY.BG_ALPHA;
         baserect.setInteractive();
         this.frame_grp.add(baserect);
 
-        let mousa = this.add.image(0, 0, (APPCONFIG.ID+"-"+APPCONFIG.SUMMARY.POSITIVE.IMAGES.IMG2.ID));
+        let mousa = this.add.sprite(0, 0, (APPCONFIG.ID+"-"+APPCONFIG.SUMMARY.ID), "mosha_happy.png");
         this.scaleimage('positive',mousa);
         mousa.setPosition(this.centerx_val - mousa.displayWidth * 0.9, this.centery_val + mousa.displayHeight * 0.18);
         this.frame_grp.add(mousa);
 
-        let congrat = this.add.image(0, 0, (APPCONFIG.ID+"-"+APPCONFIG.SUMMARY.POSITIVE.IMAGES.IMG1.ID));
+        let congrat = this.add.sprite(0, 0, (APPCONFIG.ID+"-"+APPCONFIG.SUMMARY.ID), "congratulations.png");
         congrat.setScale((1 / congrat.width) * mousa.displayWidth * 1);
         congrat.setPosition(this.centerx_val, this.centery_val - congrat.displayHeight * 2.5);
         this.frame_grp.add(congrat);
@@ -243,7 +243,7 @@ KGames.Summary.prototype = {
         textlbl1.setPosition(congrat.x, congrat.y + congrat.displayHeight * 1);
         this.frame_grp.add(textlbl1);
 
-        let textlbl2 = this.add.bitmapText(0, 0, APPCONFIG.ID+"-"+APPCONFIG.SUMMARY.FONTS.ROBOTO_BOLD.ID, (this.score_val).toString() + " Aha!", fntsize);
+        let textlbl2 = this.add.bitmapText(0, 0, APPCONFIG.ID+"-"+APPCONFIG.SUMMARY.FONTS.ROBOTO_BOLD.ID, (this.score_val || "").toString() + " Aha!", fntsize);
         textlbl2.setOrigin(1,0.5);
         textlbl2.setPosition(congrat.x, textlbl1.y + Math.floor(textlbl1.height * 1.3));
         this.frame_grp.add(textlbl2);
@@ -257,9 +257,9 @@ KGames.Summary.prototype = {
         let stargrp_ctr = this.add.container();
         for(let i=0; i<3; i++){
             let star_ctr = this.add.container();
-                let out = this.add.image(0, 0, (APPCONFIG.ID+"-"+APPCONFIG.SUMMARY.POSITIVE.IMAGES.IMG4.ID));
+                let out = this.add.sprite(0, 0, (APPCONFIG.ID+"-"+APPCONFIG.SUMMARY.ID), "star_white.png");
                 out.setScale((1 / out.width) * mousa.displayWidth * 0.3);
-                let fil = this.add.image(0, 0, (APPCONFIG.ID+"-"+APPCONFIG.SUMMARY.POSITIVE.IMAGES.IMG3.ID));
+                let fil = this.add.sprite(0, 0, (APPCONFIG.ID+"-"+APPCONFIG.SUMMARY.ID), "star_golden.png");
                 fil.setScale((1 / fil.width) * mousa.displayWidth * 0.3);
             star_ctr.add(out)
             star_ctr.add(fil)
@@ -299,7 +299,7 @@ KGames.Summary.prototype = {
         }
 
         //PAGE HIDE
-        this.scenehidetime_val = APPCONFIG.SUMMARY.POSITIVE.TIME;
+        this.scenehidetime_val = APPCONFIG.SUMMARY.POSITIVE_HIDE_TIME;
         if(this.scoreflag_val == 1 && !this.challengelast_bol){
             this.callnextwindow();
         }else{
@@ -314,27 +314,27 @@ KGames.Summary.prototype = {
         let baserect = this.add.rectangle(0, 0, this.swidth_val, this.sheight_val);
         baserect.setPosition(this.centerx_val, this.centery_val);
         baserect.setFillStyle(0x000000);
-        baserect.alpha = APPCONFIG.SUMMARY.NEGATIVE.BG_ALPHA;
+        baserect.alpha = APPCONFIG.SUMMARY.BG_ALPHA;
         baserect.setInteractive();
         this.frame_grp.add(baserect);
 
-        let mousa = this.add.image(0, 0, (APPCONFIG.ID+"-"+APPCONFIG.SUMMARY.NEGATIVE.IMAGES.IMG1.ID));
+        let mousa = this.add.sprite(0, 0, (APPCONFIG.ID+"-"+APPCONFIG.SUMMARY.ID), "mosha_fainting.png");
         this.scaleimage('negative',mousa);
         mousa.setPosition(this.centerx_val + mousa.displayWidth * 0.65, this.centery_val + mousa.displayHeight * 0.15);
         this.frame_grp.add(mousa);
 
-        let ohuh = this.add.image(0, 0, (APPCONFIG.ID+"-"+APPCONFIG.SUMMARY.NEGATIVE.IMAGES.IMG2.ID));
+        let ohuh = this.add.sprite(0, 0, (APPCONFIG.ID+"-"+APPCONFIG.SUMMARY.ID), "ohuh.png");
         ohuh.setScale((1 / ohuh.width) * mousa.displayWidth * 0.75);
         ohuh.setPosition(this.centerx_val, this.centery_val - ohuh.displayHeight * 1.3);
         this.frame_grp.add(ohuh);
 
-        let tryagain = this.add.image(0, 0, (APPCONFIG.ID+"-"+APPCONFIG.SUMMARY.NEGATIVE.IMAGES.IMG3.ID));
+        let tryagain = this.add.sprite(0, 0, (APPCONFIG.ID+"-"+APPCONFIG.SUMMARY.ID), "tryagain.png");
         tryagain.setScale((1 / tryagain.width) * mousa.displayWidth * 0.75);
         tryagain.setPosition(ohuh.x, this.centery_val - tryagain.displayHeight * 0.6);
         this.frame_grp.add(tryagain);
 
         //PAGE HIDE
-        this.scenehidetime_val = APPCONFIG.SUMMARY.NEGATIVE.TIME;
+        this.scenehidetime_val = APPCONFIG.SUMMARY.NEGATIVE_HIDE_TIME;
         this.callsceneclose();
     },
 
@@ -347,49 +347,63 @@ KGames.Summary.prototype = {
         let baserect = this.add.rectangle(0, 0, this.swidth_val, this.sheight_val);
         baserect.setPosition(this.centerx_val, this.centery_val);
         baserect.setFillStyle(0x000000);
-        baserect.alpha = APPCONFIG.SUMMARY.NEXT.BG_ALPHA;
+        baserect.alpha = APPCONFIG.SUMMARY.BG_ALPHA;
         baserect.setInteractive();
         this.frame_grp.add(baserect);
 
-        let mousa = this.add.image(0, 0, (APPCONFIG.ID+"-"+APPCONFIG.SUMMARY.NEXT.IMAGES.IMG2.ID));
+        let mousa = this.add.sprite(0, 0, (APPCONFIG.ID+"-"+APPCONFIG.SUMMARY.ID), "mosha_standing.png");
         this.scaleimage('next',mousa);
         mousa.setPosition(this.centerx_val + mousa.displayWidth * 1.2, this.centery_val + mousa.displayHeight * 0.22);
         this.frame_grp.add(mousa);
 
-        let woohoo = this.add.image(0, 0, (APPCONFIG.ID+"-"+APPCONFIG.SUMMARY.NEXT.IMAGES.IMG5.ID));
+        let woohoo = this.add.sprite(0, 0, (APPCONFIG.ID+"-"+APPCONFIG.SUMMARY.ID), "woohoo.png");
         woohoo.setScale((1 / woohoo.width) * mousa.displayWidth * 1.1);
         woohoo.setPosition(this.centerx_val, this.centery_val - woohoo.displayHeight * 2);
         this.frame_grp.add(woohoo);
 
-        let challenge = this.add.image(0, 0, (APPCONFIG.ID+"-"+APPCONFIG.SUMMARY.NEXT.IMAGES.IMG1.ID));
+        let challenge = this.add.sprite(0, 0, (APPCONFIG.ID+"-"+APPCONFIG.SUMMARY.ID), "challenge.png");
         challenge.setScale((1 / challenge.width) * mousa.displayWidth * 1.1);
         challenge.setPosition(woohoo.x, woohoo.y + challenge.displayHeight * 2);
         this.frame_grp.add(challenge);
 
-        let yesbtn = this.add.image(0, 0, (APPCONFIG.ID+"-"+APPCONFIG.SUMMARY.NEXT.IMAGES.IMG3.ID));
+        let yesbtn = this.add.sprite(0, 0, (APPCONFIG.ID+"-"+APPCONFIG.SUMMARY.ID), "yes.png");
         yesbtn.setScale((1 / yesbtn.width) * mousa.displayWidth * 0.8);
         yesbtn.setPosition(woohoo.x, woohoo.y + yesbtn.displayHeight * 2.7);
-        yesbtn.name = APPCONFIG.SUMMARY.NEXT.IMAGES.IMG3.ID;
+        yesbtn.isdown = false;
         yesbtn.setInteractive();
         this.frame_grp.add(yesbtn);
 
-        let notbtn = this.add.image(0, 0, (APPCONFIG.ID+"-"+APPCONFIG.SUMMARY.NEXT.IMAGES.IMG4.ID));
+        let notbtn = this.add.sprite(0, 0, (APPCONFIG.ID+"-"+APPCONFIG.SUMMARY.ID), "notnow.png");
         notbtn.setScale((1 / notbtn.width) * mousa.displayWidth * 0.8);
         notbtn.setPosition(yesbtn.x, yesbtn.y + notbtn.displayHeight * 1.4);
-        notbtn.name = APPCONFIG.SUMMARY.NEXT.IMAGES.IMG4.ID;
+        notbtn.isdown = false;
         notbtn.setInteractive();
         this.frame_grp.add(notbtn);
 
         // BTN Interactive
+        yesbtn.on('pointerdown', function(pointer, localX, localY, event){
+            this.isdown = true;
+        });
+
         yesbtn.on('pointerup', function(pointer, localX, localY, event){
-            Global.Log('BTN: Yes. Go Ahead.');
-            thisclass.challenge_bol = true;
-            thisclass.closethisscene();
+            if(this.isdown){
+                Global.Log('BTN: Yes. Go Ahead.');
+                this.isdown = false;
+                thisclass.challenge_bol = true;
+                thisclass.closethisscene();
+            }
+        });
+
+        notbtn.on('pointerdown', function(pointer, localX, localY, event){
+            this.isdown = true;
         });
 
         notbtn.on('pointerup', function(pointer, localX, localY, event){
-            Global.Log('BTN: Not Now');
-            thisclass.closethisscene();
+            if(this.isdown){
+                Global.Log('BTN: Not Now');
+                this.isdown = false;
+                thisclass.closethisscene();
+            }
         });
     },
 

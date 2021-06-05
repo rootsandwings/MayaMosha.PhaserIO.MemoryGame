@@ -42,19 +42,8 @@ KGames.Preloader.prototype = {
             }
             //SUMMARY
             if(APPCONFIG.SUMMARY){
-                for (const key in APPCONFIG.SUMMARY) {
-                    if(APPCONFIG.SUMMARY[key].ID){
-                        if(APPCONFIG.SUMMARY[key].IMAGES){
-                            for( const keyi in APPCONFIG.SUMMARY[key].IMAGES){
-                                this.load.image(APPCONFIG.ID+"-"+APPCONFIG.SUMMARY[key].IMAGES[keyi].ID, APPCONFIG.SUMMARY[key].IMAGES[keyi].PATH);
-                            }
-                        }
-                        //LOAD BTN
-                        for( const keyb in APPCONFIG.SUMMARY[key].BTN){
-                            this.load.image(APPCONFIG.ID+"-"+APPCONFIG.SUMMARY[key].BTN[keyb].ID, APPCONFIG.SUMMARY[key].BTN[keyb].PATH);
-                        }
-                    }
-                }
+                //PRELOAD ASSETS
+                this.load.atlas((APPCONFIG.ID+"-"+APPCONFIG.SUMMARY.ID), APPCONFIG.SUMMARY.PATH, APPCONFIG.SUMMARY.JSON);
                 //PRELOAD SOUNDS
                 if(APPCONFIG.SUMMARY.SOUNDS){
                     for (const key in APPCONFIG.SUMMARY.SOUNDS) {
