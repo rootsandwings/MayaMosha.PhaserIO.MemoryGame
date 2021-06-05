@@ -35,10 +35,8 @@ KGames.Preloader.prototype = {
                 }
             }
             //PRELOAD GTIMER
-            if(APPCONFIG.GTIMER){
-                if(APPCONFIG.GTIMER.FONT){
-                    this.load.bitmapFont(APPCONFIG.ID+"-"+APPCONFIG.GTIMER.FONT.ID, APPCONFIG.GTIMER.FONT.PATH, APPCONFIG.GTIMER.FONT.XML);
-                }
+            if(APPCONFIG.GTIMER && APPCONFIG.GTIMER.FONT){
+                this.load.bitmapFont(APPCONFIG.ID+"-"+APPCONFIG.GTIMER.FONT.ID, APPCONFIG.GTIMER.FONT.PATH, APPCONFIG.GTIMER.FONT.XML);
             }
             //SUMMARY
             if(APPCONFIG.SUMMARY){
