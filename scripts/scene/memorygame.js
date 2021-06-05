@@ -429,7 +429,6 @@ KGames.MemoryGame.prototype = {
                 for(let j=0; j<this.totalcard_val; j++){
                     if( j >= textlimit ){
                         cardarr[ j ] = ["image", idatavl[icnt] || "", icnt];
-                        console.log(icnt)
                         icnt = icnt + 1;
                         if(icnt >= Global.GetLength(idatavl)){
                             icnt = 0;
@@ -481,101 +480,100 @@ KGames.MemoryGame.prototype = {
 
     createbtn: function(){
         let thisclass = this;
-        if(APPCONFIG.MENU){
-            for (const key in APPCONFIG.MENU.BTN) {
-                if(APPCONFIG.MENU.BTN[key].ID){
-                    let ID = APPCONFIG.MENU.BTN[key].ID;
-                    let POS = APPCONFIG.MENU.BTN[key].POS;
-                    this[key.toLowerCase()+"_btn"] = this.add.image(0, 0, (APPCONFIG.ID+"-"+ID));
-                    this[key.toLowerCase()+"_btn"].ID = ID;
-                    this[key.toLowerCase()+"_btn"].isdown = false;
-                    //BTN SCALE
-                    this[key.toLowerCase()+"_btn"].scl = (1/this[key.toLowerCase()+"_btn"].displayWidth) * this.swidth_val * 0.05;
-                    this[key.toLowerCase()+"_btn"].setScale(this[key.toLowerCase()+"_btn"].scl);
-                    this[key.toLowerCase()+"_btn"].setPosition(
-                        this.swidth_val * POS.X,
-                        this.sheight_val * POS.Y
-                    );
-                    this[key.toLowerCase()+"_btn"].ondown = function(){
-                        if(this.scaleX != (this.scl * 0.92)){
-                            this.tween1 = thisclass.cleartween(this.tween1);
-                            this.tween1 = thisclass.tweens.add({
-                                targets: this,
-                                scaleX: (this.scl * 0.92),
-                                scaleY: (this.scl * 0.92),
-                                duration: thisclass.btnanimtime_val,
-                                ease: 'Linear',
-                            });
-                        }
+        if(APPCONFIG.MENU && APPCONFIG.MENU.BTN){
+            for (const key in APPCONFIG.MENU.BTN.POS) {
+                let POS = APPCONFIG.MENU.BTN.POS[key];
+                this[key.toLowerCase()+"_btn"] = this.add.sprite(0, 0, (APPCONFIG.ID+"-"+APPCONFIG.MENU.BTN.ID), POS.NAME);
+                this[key.toLowerCase()+"_btn"].ID = POS.NAME.toUpperCase().replace(".PNG","");
+                this[key.toLowerCase()+"_btn"].isdown = false;
+                //BTN SCALE
+                this[key.toLowerCase()+"_btn"].scl = (1/this[key.toLowerCase()+"_btn"].displayWidth) * this.swidth_val * 0.05;
+                this[key.toLowerCase()+"_btn"].setScale(this[key.toLowerCase()+"_btn"].scl);
+                this[key.toLowerCase()+"_btn"].setPosition(
+                    this.swidth_val * POS.X,
+                    this.sheight_val * POS.Y
+                );
+                this[key.toLowerCase()+"_btn"].ondown = function(){
+                    if(this.scaleX != (this.scl * 0.92)){
+                        this.tween1 = thisclass.cleartween(this.tween1);
+                        this.tween1 = thisclass.tweens.add({
+                            targets: this,
+                            scaleX: (this.scl * 0.92),
+                            scaleY: (this.scl * 0.92),
+                            duration: thisclass.btnanimtime_val,
+                            ease: 'Linear',
+                        });
                     }
-                    this[key.toLowerCase()+"_btn"].onup = function(){
-                        if(this.scaleX != (this.scl * 1.0)){
-                            this.tween2 = thisclass.cleartween(this.tween2);
-                            this.tween2 = thisclass.tweens.add({
-                                targets: this,
-                                scaleX: (this.scl * 1.0),
-                                scaleY: (this.scl * 1.0),
-                                duration: thisclass.btnanimtime_val,
-                                ease: 'Linear',
-                            });
-                        }
+                }
+                this[key.toLowerCase()+"_btn"].onup = function(){
+                    if(this.scaleX != (this.scl * 1.0)){
+                        this.tween2 = thisclass.cleartween(this.tween2);
+                        this.tween2 = thisclass.tweens.add({
+                            targets: this,
+                            scaleX: (this.scl * 1.0),
+                            scaleY: (this.scl * 1.0),
+                            duration: thisclass.btnanimtime_val,
+                            ease: 'Linear',
+                        });
                     }
-                    this[key.toLowerCase()+"_btn"].setInteractive();
-                    this[key.toLowerCase()+"_btn"].on('pointerdown',function(pointer, px, py, event){
-                        thisclass.active_btn = this;
-                        this.isdown = true;
+                }
+                this[key.toLowerCase()+"_btn"].setInteractive();
+                this[key.toLowerCase()+"_btn"].on('pointerdown',function(pointer, px, py, event){
+                    thisclass.active_btn = this;
+                    this.isdown = true;
+                    this.ondown();
+                });
+                this[key.toLowerCase()+"_btn"].on('pointerover',function(pointer, px, py, event){
+                    if(thisclass.active_btn == this){
                         this.ondown();
-                    });
-                    this[key.toLowerCase()+"_btn"].on('pointerover',function(pointer, px, py, event){
-                        if(thisclass.active_btn == this){
-                            this.ondown();
-                        }
-                    });
-                    this[key.toLowerCase()+"_btn"].on('pointerout',function(pointer, px, py, event){
-                        this.onup();
-                    });
-                    this[key.toLowerCase()+"_btn"].on('pointerup',function(pointer, px, py, event){
-                        this.onup();
-                        if(this.isdown){
-                            if(thisclass.active_btn != null && thisclass.active_btn == this){
-                                Global.Log("BTN: "+(this.ID));
-                                if(this.ID == "MENU-REPLAY"){
-                                    thisclass.gamereplay_bol = true;
-                                    thisclass.replaytask({chareset: true});
-                                }
+                    }
+                });
+                this[key.toLowerCase()+"_btn"].on('pointerout',function(pointer, px, py, event){
+                    this.onup();
+                });
+                this[key.toLowerCase()+"_btn"].on('pointerup',function(pointer, px, py, event){
+                    this.onup();
+                    if(this.isdown){
+                        if(thisclass.active_btn != null && thisclass.active_btn == this){
+                            Global.Log("BTN: "+(this.ID));
+                            if(this.ID == "REPLAY"){
+                                thisclass.gamereplay_bol = true;
+                                thisclass.replaytask({chareset: true});
                             }
                         }
-                        this.isdown = false;
-                    });
-                }
+                    }
+                    this.isdown = false;
+                });
             }
         }
     },
 
     createtimebox: function(){
-        let POS = APPCONFIG.GTIMER.POS;
-        this.timer_ctr = this.add.container();
-            //IMAGE
-            let tframe = this.add.image(0, 0, (APPCONFIG.ID+"-"+APPCONFIG.GTIMER.ID));
-            tframe.setScale((1/tframe.displayWidth) * this.swidth_val * 0.05);
-            this.timer_ctr.add(tframe);
-            //LABEL
-            let fntsize = Math.floor(0.5 * tframe.displayHeight);
-            let txtlbl = this.add.bitmapText(0, 0, APPCONFIG.ID+"-"+APPCONFIG.GTIMER.FONT.ID, "00", fntsize);
-            txtlbl.setTintFill(0x000000);
-            txtlbl.setOrigin(0.5);
-            this.timer_ctr.add(txtlbl);
-        this.timer_ctr.setPosition(this.swidth_val * POS.X, this.sheight_val * POS.Y);
-        this.timer_ctr.show = function(flag){
-            this.visible = flag;
+        if(APPCONFIG.MENU && APPCONFIG.MENU.BTN){
+            let POS = APPCONFIG.GTIMER.POS;
+            this.timer_ctr = this.add.container();
+                //IMAGE
+                let tframe = this.add.sprite(0, 0, (APPCONFIG.ID+"-"+APPCONFIG.MENU.BTN.ID), APPCONFIG.GTIMER.NAME);
+                tframe.setScale((1/tframe.displayWidth) * this.swidth_val * 0.05);
+                this.timer_ctr.add(tframe);
+                //LABEL
+                let fntsize = Math.floor(0.5 * tframe.displayHeight);
+                let txtlbl = this.add.bitmapText(0, 0, APPCONFIG.ID+"-"+APPCONFIG.GTIMER.FONT.ID, "00", fntsize);
+                txtlbl.setTintFill(0x000000);
+                txtlbl.setOrigin(0.5);
+                this.timer_ctr.add(txtlbl);
+            this.timer_ctr.setPosition(this.swidth_val * POS.X, this.sheight_val * POS.Y);
+            this.timer_ctr.show = function(flag){
+                this.visible = flag;
+            }
+            this.timer_ctr.show(false);
+            //INIT Game Timer
+            GTimer.Init({
+                view: this.timer_ctr,
+                time: 0,
+                scene: this
+            });
         }
-        this.timer_ctr.show(false);
-        //INIT Game Timer
-        GTimer.Init({
-            view: this.timer_ctr,
-            time: 0,
-            scene: this
-        });
     },
 
     createsparkle: function(){
@@ -885,7 +883,7 @@ KGames.MemoryGame.prototype = {
                 //COMPARE CARD OPENED
                 if(this.cardopened_val >= this.totalcard_val){
                     //GAME END
-                    console.log("Game End!");
+                    Global.Log("Game End!");
                     this.gameend_bol = true;
                     this.stopgametimer();
                     this.delaysummary();

@@ -3,37 +3,33 @@ const APPCONFIG = {
     //MENU BUTTONS
     MENU: {
         BTN: {
+            ID:"MBUTTONS",
             ANIM_TIME: 0.1,
-            HOME:{
-                ID: "MENU-HOME",
-                PATH: 'assets/images/btn/home.png',
-                POS:{
+            PATH: "assets/sprite/buttons.png",
+            JSON: "assets/sprite/buttons.json",
+            POS: {
+                HOME:{
+                    NAME:"home.png",
                     X: 0.05, // 0.16% of stage width
                     Y: 0.10,  // 0.09% of stage height
-                }
-            },
-            REPLAY:{
-                ID: "MENU-REPLAY",
-                PATH: 'assets/images/btn/replay.png',
-                POS:{
+                },
+                REPLAY:{
+                    NAME:"replay.png",
                     X: 0.145,
                     Y: 0.10,
-                }
-            },
-            CLOSE:{
-                ID: "MENU-CLOSE",
-                PATH: 'assets/images/btn/close.png',
-                POS:{
+                },
+                CLOSE:{
+                    NAME:"close.png",
                     X: 0.935,
                     Y: 0.10,
                 }
-            },
+            }
         },
     },
     //TIMER
     GTIMER: {
         ID: "GTIMER",
-        PATH: "assets/images/timer.png",
+        NAME: "timer.png",
         POS:{
             X: 0.82,
             Y: 0.10,

@@ -16,11 +16,7 @@ KGames.Preloader.prototype = {
         if(typeof(APPCONFIG) != "undefined"){
             //MENU BTN
             if(APPCONFIG.MENU && APPCONFIG.MENU.BTN){
-                for (const key in APPCONFIG.MENU.BTN) {
-                    if(APPCONFIG.MENU.BTN[key].ID){
-                        this.load.image(APPCONFIG.ID+"-"+APPCONFIG.MENU.BTN[key].ID, APPCONFIG.MENU.BTN[key].PATH);
-                    }
-                }
+                this.load.atlas((APPCONFIG.ID+"-"+APPCONFIG.MENU.BTN.ID), APPCONFIG.MENU.BTN.PATH, APPCONFIG.MENU.BTN.JSON);
             }
             //SPARKLE ANIM
             if(APPCONFIG.SPARKLE){
@@ -40,7 +36,6 @@ KGames.Preloader.prototype = {
             }
             //PRELOAD GTIMER
             if(APPCONFIG.GTIMER){
-                this.load.image(APPCONFIG.ID+"-"+APPCONFIG.GTIMER.ID, APPCONFIG.GTIMER.PATH);
                 if(APPCONFIG.GTIMER.FONT){
                     this.load.bitmapFont(APPCONFIG.ID+"-"+APPCONFIG.GTIMER.FONT.ID, APPCONFIG.GTIMER.FONT.PATH, APPCONFIG.GTIMER.FONT.XML);
                 }
