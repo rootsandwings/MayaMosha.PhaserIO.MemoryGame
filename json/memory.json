@@ -11,7 +11,7 @@
 
         "BG": {
             "ID": "01",
-            "PATH": "assets/images/memory_background.png"
+            "PATH": "assets/images/BkMemoryGame.png"
         },
 
         "BOX": {
@@ -59,7 +59,7 @@
         },
 
         "CHALLENGE":{
-            "FLAG": 1,
+            "FLAG": 0,
             "ROUNDS": {
                 "ROUND1": 60,
                 "ROUND2": 60
@@ -67,7 +67,7 @@
         },
 
         "GTIMER":{
-            "FLAG": true,
+            "FLAG": false,
             "TIME": 60
         },
 
