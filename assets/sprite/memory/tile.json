@@ -1,0 +1,62 @@
+{
+	"textures": [
+		{
+			"image": "tile.png",
+			"format": "RGBA8888",
+			"size": {
+				"w": 772,
+				"h": 386
+			},
+			"scale": 1,
+			"frames": [
+				{
+					"filename": "down.png",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 384,
+						"h": 384
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 384,
+						"h": 384
+					},
+					"frame": {
+						"x": 1,
+						"y": 1,
+						"w": 384,
+						"h": 384
+					}
+				},
+				{
+					"filename": "up.png",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 384,
+						"h": 384
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 384,
+						"h": 384
+					},
+					"frame": {
+						"x": 387,
+						"y": 1,
+						"w": 384,
+						"h": 384
+					}
+				}
+			]
+		}
+	],
+	"meta": {
+		"app": "https://www.codeandweb.com/texturepacker",
+		"version": "3.0",
+		"smartupdate": "$TexturePacker:SmartUpdate:6d7edd6a6df0842b90afda0e9b181edf:31aaf94869e8a5ebb8c2dadb352efae5:3fc5630543b79be9d9cd5b563671216c$"
+	}
+}

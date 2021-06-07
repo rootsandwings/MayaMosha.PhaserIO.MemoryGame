@@ -604,7 +604,7 @@ KGames.MemoryGame.prototype = {
             let sclbox_val = null;
             //DOWN IMAGE
             sclbox_val = this.bg_img.displayHeight * boxsize_val;
-            let downtile_img = this.add.image(0,0,this.CONFIG.ID+"-"+this.CONFIG.BOX.DOWN_IMG.ID);
+            let downtile_img = this.add.sprite(0,0,this.CONFIG.ID+"-"+this.CONFIG.BOX.ID,this.CONFIG.BOX.DOWN_BOX_NAME);
             downtile_img.setScale(0.01, sclbox_val);
             cardctr.add(downtile_img);
             //CONTENT
@@ -632,7 +632,7 @@ KGames.MemoryGame.prototype = {
                 cardctr.add(card_img);
             }
             //TOP IMAGE
-            let toptile_img = this.add.image(0,0,this.CONFIG.ID+"-"+this.CONFIG.BOX.TOP_IMG.ID);
+            let toptile_img = this.add.sprite(0,0,this.CONFIG.ID+"-"+this.CONFIG.BOX.ID,this.CONFIG.BOX.TOP_BOX_NAME);
             toptile_img.setScale(sclbox_val);
             cardctr.add(toptile_img);
             //SOUND

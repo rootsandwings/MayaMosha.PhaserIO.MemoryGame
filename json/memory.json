@@ -15,15 +15,12 @@
         },
 
         "BOX": {
+            "ID": "BOX-TILE",
             "SPACE": 0.05,
-            "TOP_IMG": {
-                "ID": "TILE-TOP",
-                "PATH": "assets/images/tile_up.png"
-            },
-            "DOWN_IMG": {
-                "ID": "TILE-DOWN",
-                "PATH": "assets/images/tile_down.png"
-            },
+            "PATH": "assets/sprite/memory/tile.png",
+            "JSON": "assets/sprite/memory/tile.json",
+            "TOP_BOX_NAME": "up.png",
+            "DOWN_BOX_NAME": "down.png",
             "FONT": {
                 "ID": "KRUTI-010",
                 "PATH": "assets/fonts/Kruti010.png",
