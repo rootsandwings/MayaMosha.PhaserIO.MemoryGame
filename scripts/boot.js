@@ -6,28 +6,21 @@ window.onload = function(){
     
     //GAME CONFIG
     const config = {
-        type: Phaser.AUTO,
-        autoResize: true,
+        type: Phaser.CANVAS,
         seed: [ (Date.now() * Math.random()).toString() ],
         scale: {
             mode: Phaser.Scale.FIT,
+            autoCenter: Phaser.Scale.CENTER_BOTH,
             width: window.innerWidth * window.devicePixelRatio,
             height: window.innerHeight * window.devicePixelRatio,
-            autoCenter: Phaser.Scale.CENTER_BOTH,
-            zoom: 1
         },
         physics: {
-            default: false,
+            default: 'arcade',
         },
-        fps: {
-            min: 30,
-            target: 60,
-            forceSetTimeOut: true,
-            deltaHistory: 10
-        },
-        autoFocus: true,
-        transparent: true,
-        autoRound: false,
+        backgroundColor: 0xFFFFFF,
+        autoRound:true,
+        transparent:true,
+        disableContextMenu: true,
         gamejson: null
     }
 

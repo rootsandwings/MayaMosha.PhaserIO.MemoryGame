@@ -18,6 +18,9 @@ KGames.MemoryGame.prototype = {
         this.gametimermode_bol = false;
         this.gametimerend_bol = false;
 
+        //Label
+        this.fpsmeter_lbl = null;
+
         //Image
         this.bg_img = null;
 
@@ -471,6 +474,14 @@ KGames.MemoryGame.prototype = {
     },
 
     // UI
+    createfpsmeter: function(){
+        if(Global.debug){
+            this.fpsmeter_lbl = this.add.bitmapText(50, 50, APPCONFIG.ID+"-"+APPCONFIG.GTIMER.FONT.ID, "00", 60);
+            this.fpsmeter_lbl.setOrigin(0.5);
+            this.fpsmeter_lbl.visible = Global.debugfps || false;
+        }
+    },
+
     createbg: function(){
         this.bg_img = this.add.image(0, 0, (this.CONFIG.ID+"-"+this.CONFIG.BG.ID));
         this.bg_img.setOrigin(0.5);
@@ -1132,6 +1143,7 @@ KGames.MemoryGame.prototype = {
         this.createsparkle();
         this.createbtn();
         this.creatememorygrid();
+        this.createfpsmeter();
     },
 
     // Game Methods //
@@ -1161,7 +1173,9 @@ KGames.MemoryGame.prototype = {
 
     //update function
     update: function(){
-
+        if(this.fpsmeter_lbl){
+            this.fpsmeter_lbl.text = Math.floor(this.game.loop.actualFps);
+        }
     },
 
 }
