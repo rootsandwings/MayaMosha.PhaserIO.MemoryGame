@@ -603,7 +603,7 @@ KGames.MemoryGame.prototype = {
             let sclimg_val = 1;
             let sclbox_val = null;
             //DOWN IMAGE
-            sclbox_val = this.bg_img.displayHeight * boxsize_val;
+            sclbox_val = this.swidth_val * boxsize_val;
             let downtile_img = this.add.sprite(0,0,this.CONFIG.ID+"-"+this.CONFIG.BOX.ID,this.CONFIG.BOX.DOWN_BOX_NAME);
             downtile_img.setScale(0.01, sclbox_val);
             cardctr.add(downtile_img);

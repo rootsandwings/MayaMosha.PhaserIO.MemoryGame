@@ -83,7 +83,7 @@
             "TOTAL_CARD": 6,
             "TEXT_LIMIT": 4,
             "GRID": "2X6",
-            "SIZE": 0.0005
+            "SIZE": 0.00032
         },
         "TASK2":{
             "LINE": 2,
@@ -92,7 +92,7 @@
             "TOTAL_CARD": 6,
             "TEXT_LIMIT": 4,
             "GRID": "3X4",
-            "SIZE": 0.0005
+            "SIZE": 0.00032
         },
         "TASK3":{
             "LINE": 3,
@@ -101,7 +101,7 @@
             "TOTAL_CARD": 6,
             "TEXT_LIMIT": 4,
             "GRID": "2X6",
-            "SIZE": 0.0005
+            "SIZE": 0.00032
         }
         
     }
