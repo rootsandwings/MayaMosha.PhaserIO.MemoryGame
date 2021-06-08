@@ -79,27 +79,6 @@ KGames.Preloader.prototype = {
                 this.load.atlas((CONFIG.ID+"-"+CONFIG.BOX.ID), CONFIG.BOX.PATH, CONFIG.BOX.JSON);
             }
         }
-        if(typeof(DATA) != "undefined"){
-            //PRELOAD GAME DATA
-            for( const key in DATA){
-                for( const keyt in DATA[key]){
-                    if(keyt == "CNT"){
-                        for( const keyc in DATA[key][keyt]){
-                            let content = DATA[key][keyt][keyc];
-                            if(content.IMG){
-                                this.load.image(CONFIG.ID+"-"+content.ID, content.IMG);
-                            }
-                            if(content.BOX_SND){
-                                this.load.audio(CONFIG.ID+"-"+content.ID, content.BOX_SND);
-                            }
-                            if(content.BOX_GIF){
-                                this.load.atlas((CONFIG.ID+"-"+content.BOX_GIF.ID), content.BOX_GIF.PATH, content.BOX_GIF.JSON);
-                            }
-                        }
-                    }
-                }
-            }
-        }
     },
 
     preloadgamejs: function(){
