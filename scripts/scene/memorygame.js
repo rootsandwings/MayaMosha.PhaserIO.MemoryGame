@@ -570,7 +570,6 @@ KGames.MemoryGame.prototype = {
                 //LABEL
                 let fntsize = Math.floor(0.5 * tframe.displayHeight);
                 let txtlbl = this.add.bitmapText(0, 0, APPCONFIG.ID+"-"+APPCONFIG.GTIMER.FONT.ID, "00", fntsize);
-                txtlbl.setTintFill(0x000000);
                 txtlbl.setOrigin(0.5);
                 this.timer_ctr.add(txtlbl);
             this.timer_ctr.setPosition(this.swidth_val * POS.X, this.sheight_val * POS.Y);
@@ -614,7 +613,6 @@ KGames.MemoryGame.prototype = {
                 fontsize = Math.floor(downtile_img.displayHeight * fontsize);
                 let label_btxt = this.add.bitmapText(0, 0, (this.CONFIG.ID+"-"+this.CONFIG.BOX.FONT.ID), carddetails["LETTER"], fontsize);
                 label_btxt.setOrigin(0.5);
-                label_btxt.setTintFill(0x000000);
                 label_btxt.setScale(0.01,1);
                 if(this.CONFIG.BOX.FONT.COLOR != null){
                     label_btxt.setTintFill(Phaser.Display.Color.HexStringToColor(this.CONFIG.BOX.FONT.COLOR).color);
