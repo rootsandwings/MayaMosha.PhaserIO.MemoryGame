@@ -2,8 +2,8 @@
 let Global = {}
 
 //Property
-Global.debug = true;
-Global.debugfps = true;
+Global.debug = false;
+Global.debugfps = false;
 
 //Method
 Global.Log = function(msg){
