@@ -3,7 +3,7 @@ let Global = {}
 
 //Property
 Global.debug = true;
-Global.debugfps = false;
+Global.debugfps = true;
 
 //Method
 Global.Log = function(msg){
@@ -18,8 +18,12 @@ Global.Shuffle = function (array) {
     }
 }
 
-Global.GetRandomInt = function(max) {
+Global.GetRandomInt = function(max){
     return (Math.floor(Math.random() * max));
+}
+
+Global.GetRandomArbitrary = function(min, max){
+    return Math.random() * (max - min) + min;
 }
 
 Global.GetLength = function(arr){
