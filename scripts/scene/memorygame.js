@@ -26,6 +26,9 @@ KGames.MemoryGame.prototype = {
 
         //Button
         this.active_btn = null;
+        this.close_btn = null;
+        this.home_btn = null;
+        this.back_btn = null;
 
         //Value
         this.swidth_val = this.game.config.width; // stage width
@@ -475,10 +478,9 @@ KGames.MemoryGame.prototype = {
 
     // UI
     createfpsmeter: function(){
-        if(Global.debug){
+        if(Global.debugfps){
             this.fpsmeter_lbl = this.add.bitmapText(50, 50, APPCONFIG.ID+"-"+APPCONFIG.GTIMER.FONT.ID, "00", 60);
             this.fpsmeter_lbl.setOrigin(0.5);
-            this.fpsmeter_lbl.visible = Global.debugfps || false;
         }
     },
 
