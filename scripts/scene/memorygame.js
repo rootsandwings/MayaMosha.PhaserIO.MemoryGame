@@ -1155,8 +1155,8 @@ KGames.MemoryGame.prototype = {
 
     //init function
     init: function(){
-        this.CONFIG = gamejson.CONFIG;
-        this.DATA = gamejson.DATA;
+        this.CONFIG = Global.GameJson.CONFIG;
+        this.DATA = Global.GameJson.DATA;
         Global.Log(this.CONFIG.NAME+": "+this.CONFIG.VERSION);
     },
 
