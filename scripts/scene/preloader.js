@@ -27,15 +27,6 @@ KGames.Preloader.prototype = {
         }
     },
 
-    // SCALE IMAGE
-    scaleimage: function(obj){
-        if (this.swidth_val / this.sheight_val > 1920 / 1080) {
-            obj.setScale((1 / obj.width) * this.game.config.width * 0.25);
-        } else {
-            obj.setScale((1 / obj.width) * this.game.config.width * 0.20);
-        }
-    },
-
     //COMMON CONFIG
     preloadcommon: function(){
         if(typeof(APPCONFIG) != "undefined"){
@@ -153,7 +144,7 @@ KGames.Preloader.prototype = {
         let preloadtex = this.textures.get(APPCONFIG.ID+"-"+APPCONFIG.PRELOAD.ID);
         this.createanim((APPCONFIG.ID+"-"+APPCONFIG.PRELOAD.ID),"preload",preloadtex,APPCONFIG.PRELOAD.FRAME_RATE,-1)
         this.preload_spr = this.add.sprite(0, 0, (APPCONFIG.ID+"-"+APPCONFIG.PRELOAD.ID));
-        this.scaleimage(this.preload_spr);
+        this.preload_spr.setScale((1 / this.preload_spr.width) * this.game.config.width * 0.20)
         this.preload_spr.setOrigin(0.5)
         this.preload_spr.x = this.game.config.width * 0.5;
         this.preload_spr.y = this.game.config.height * 0.5;
