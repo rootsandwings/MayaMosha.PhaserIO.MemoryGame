@@ -7,7 +7,7 @@
 
         "VERSION": "1.0",
 
-        "LANG": "HINDI",
+        "LANG": "TELUGU",
 
         "BG": {
             "ID": "01",
@@ -22,10 +22,9 @@
             "TOP_BOX_NAME": "up.png",
             "DOWN_BOX_NAME": "down.png",
             "FONT": {
-                "ID": "KRUTI-010",
-                "PATH": "assets/fonts/Kruti010.png",
-                "XML": "assets/fonts/Kruti010.xml",
-                "COLOR": "#000000",
+                "ID": "NOTO-SANS",
+                "PATH": "assets/fonts/NotoSans.png",
+                "XML": "assets/fonts/NotoSans.xml",
                 "SIZE": 0.5
             },
             "OPEN_TIME": 0.2,

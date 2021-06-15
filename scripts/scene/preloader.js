@@ -103,10 +103,10 @@ KGames.Preloader.prototype = {
             //LOAD LANGUAGE GAME AUDIO & IMAGE
             this.applang = (CONFIG.LANG || "").toLowerCase();
             if(this.applang != null && this.applang != ""){
-                this.load.script('TDictJS', "scripts/dictionary/letter_"+(this.applang)+".js");
-                this.load.script('TDataJS', 'scripts/data/letter_'+(this.applang)+'.js');
-                this.load.script('IDictJS', 'scripts/dictionary/image_'+(this.applang)+'.js');
-                this.load.script('IDataJS', 'scripts/data/image_'+(this.applang)+'.js');
+                this.load.script('TDictJS', "scripts/dictionary/"+(this.applang)+"/letter.js");
+                this.load.script('TDataJS', "scripts/data/"+(this.applang)+"/letter.js");
+                this.load.script('IDictJS', "scripts/dictionary/"+(this.applang)+"/image.js");
+                this.load.script('IDataJS', "scripts/data/"+(this.applang)+"/image.js");
             }
         }
     },

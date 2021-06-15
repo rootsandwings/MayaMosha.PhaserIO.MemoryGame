@@ -1,0 +1,108 @@
+{
+    "CONFIG":{
+
+        "ID": "05",
+
+        "NAME": "MEMORY GAME",
+
+        "VERSION": "1.0",
+
+        "LANG": "HINDI",
+
+        "BG": {
+            "ID": "01",
+            "PATH": "assets/images/BkMemoryGame.png"
+        },
+
+        "BOX": {
+            "ID": "BOX-TILE",
+            "SPACE": 0.05,
+            "PATH": "assets/sprite/memory/tile.png",
+            "JSON": "assets/sprite/memory/tile.json",
+            "TOP_BOX_NAME": "up.png",
+            "DOWN_BOX_NAME": "down.png",
+            "FONT": {
+                "ID": "KRUTI-010",
+                "PATH": "assets/fonts/Kruti010.png",
+                "XML": "assets/fonts/Kruti010.xml",
+                "SIZE": 0.5
+            },
+            "OPEN_TIME": 0.2,
+            "CLOSE_DELAY": 1,
+            "CORRECT_DELAY": 1
+        },
+
+        "SOUNDS":{
+            "INTRO": { "ID": "INTRO", "PATH": "assets/sounds/memory/DiwaliVOIntro.m4a", "FORCE_PLAY": false, "END_DELAY": 1000, "VOLUME": 0.8 },
+            "CHALLENGE_INTRO": { "ID": "CHALLENGE INTRO", "PATH": "assets/sounds/memory/DiwaliVOIntro.m4a", "FORCE_PLAY": false, "END_DELAY": 1000, "VOLUME": 0.8 },
+            "BGMUSIC": { "ID": "BG-MUSIC", "PATH": "assets/sounds/memory/MemoryBGMusic.m4a", "LOOP": true, "VOLUME": 0.4 },
+            "WRONG": { "ID": "WRONG", "PATH": "assets/sounds/common/NegativeSound.mp3" },
+            "RIGHT": { "ID": "RIGHT", "PATH": "assets/sounds/common/PositiveSound.mp3" },
+            "CORRECT1": { "ID": "VOExcellent", "PATH": "assets/sounds/common/VOExcellent.m4a" },
+            "CORRECT2": { "ID": "VOGoodJob", "PATH": "assets/sounds/common/VOGoodJob.m4a" },
+            "CORRECT3": { "ID": "VOWowYouAreAPro", "PATH": "assets/sounds/common/VOWowYouAreAPro.m4a" },
+            "INCORRECT1": { "ID": "QT_NotReally", "PATH": "assets/sounds/common/QT_NotReally.m4a" },
+            "TASK_COMPLETE": { "ID": "TASK-COMPLETE", "PATH": "assets/sounds/common/VOExcellent.m4a" }
+        },
+
+        "ENDVIEW":{
+            "DELAY": 1000
+        },
+
+        "SCORE":{
+            "FLAG": 0,
+            "POINTS": 10
+        },
+
+        "CHALLENGE":{
+            "FLAG": 0,
+            "ROUNDS": {
+                "ROUND1": 60,
+                "ROUND2": 60
+            }
+        },
+
+        "GTIMER":{
+            "FLAG": false,
+            "TIME": 60
+        },
+
+        "CELEBRATION":{
+            "VISIBLE": true
+        }
+
+    },
+
+    "DATA": {
+
+        "TASK1":{
+            "LINE": 1,
+            "TEXT": true,
+            "IMAGE": true,
+            "TOTAL_CARD": 6,
+            "TEXT_LIMIT": 4,
+            "GRID": "2X6",
+            "SIZE": 0.00032
+        },
+        "TASK2":{
+            "LINE": 2,
+            "TEXT": true,
+            "IMAGE": true,
+            "TOTAL_CARD": 6,
+            "TEXT_LIMIT": 4,
+            "GRID": "3X4",
+            "SIZE": 0.00032
+        },
+        "TASK3":{
+            "LINE": 3,
+            "TEXT": true,
+            "IMAGE": true,
+            "TOTAL_CARD": 6,
+            "TEXT_LIMIT": 4,
+            "GRID": "2X6",
+            "SIZE": 0.00032
+        }
+        
+    }
+
+}
