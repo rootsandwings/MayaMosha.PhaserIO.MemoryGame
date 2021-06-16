@@ -41,7 +41,6 @@
             "CORRECT1": { "ID": "VOExcellent", "PATH": "assets/sounds/common/VOExcellent.m4a" },
             "CORRECT2": { "ID": "VOGoodJob", "PATH": "assets/sounds/common/VOGoodJob.m4a" },
             "CORRECT3": { "ID": "VOWowYouAreAPro", "PATH": "assets/sounds/common/VOWowYouAreAPro.m4a" },
-            "INCORRECT1": { "ID": "QT_NotReally", "PATH": "assets/sounds/common/QT_NotReally.m4a" },
             "TASK_COMPLETE": { "ID": "TASK-COMPLETE", "PATH": "assets/sounds/common/VOExcellent.m4a" }
         },
 
