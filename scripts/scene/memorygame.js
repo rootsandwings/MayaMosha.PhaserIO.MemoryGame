@@ -1,5 +1,8 @@
 KGames.MemoryGame = function(){};
 
+//APP CODE
+const GameButtonActions = { GOBACK(){}, GOAHED(){} };
+
 //Prototype
 KGames.MemoryGame.prototype = {
 
@@ -549,9 +552,19 @@ KGames.MemoryGame.prototype = {
                     if(this.isdown){
                         if(thisclass.active_btn != null && thisclass.active_btn == this){
                             Global.Log("BTN: "+(this.ID));
-                            if(this.ID == "REPLAY"){
-                                thisclass.gamereplay_bol = true;
-                                thisclass.replaytask({chareset: true});
+                            switch(this.ID){
+                                case "REPLAY":
+                                    thisclass.gamereplay_bol = true;
+                                    thisclass.replaytask({chareset: true});
+                                break;
+                                case "HOME":
+                                    GameButtonActions.GOAHED();
+                                break;
+                                case "BACK":
+                                    GameButtonActions.GOBACK();
+                                break;
+                                default:
+                                break;
                             }
                         }
                     }
