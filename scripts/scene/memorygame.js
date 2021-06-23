@@ -20,6 +20,7 @@ KGames.MemoryGame.prototype = {
         this.showceleb_bol = true;
         this.gametimermode_bol = false;
         this.gametimerend_bol = false;
+        this.autoclose_bol = false;
 
         //Label
         this.fpsmeter_lbl = null;
@@ -110,6 +111,10 @@ KGames.MemoryGame.prototype = {
             if(APPCONFIG.MENU.BTN.ANIM_TIME){
                 this.btnanimtime_val = APPCONFIG.MENU.BTN.ANIM_TIME * 1000;
             }
+        }
+
+        if(this.CONFIG['AUTO-CLOSE'] != null){
+            this.autoclose_bol = this.CONFIG['AUTO-CLOSE'];
         }
 
         // APP LANGUAGE
@@ -991,7 +996,8 @@ KGames.MemoryGame.prototype = {
                     percent: taskscores[1],
                     flag: this.challengeflag_val,
                     cflag: this.challengelast_bol,
-                    showcelebration: this.showceleb_bol
+                    showcelebration: this.showceleb_bol,
+                    autoclose: this.autoclose_bol
                 });
             }
         }else if(this.CONFIG.SCORE.FLAG == 1){
@@ -1006,7 +1012,8 @@ KGames.MemoryGame.prototype = {
                 percent: taskscores[1],
                 flag: this.challengeflag_val,
                 cflag: this.challengelast_bol,
-                showcelebration: this.showceleb_bol
+                showcelebration: this.showceleb_bol,
+                autoclose: this.autoclose_bol
             });
         }
     },
