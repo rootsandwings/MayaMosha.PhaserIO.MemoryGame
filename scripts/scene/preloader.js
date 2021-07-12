@@ -9,6 +9,7 @@ KGames.Preloader.prototype = {
         this.preloadtotal = 2;
         this.progress_val = 0;
         this.progresspercent_val = 0;
+        this.loadissue = false;
     },
 
     //CREATE ANIM FUN
@@ -172,10 +173,16 @@ KGames.Preloader.prototype = {
             Global.Log("PRELOAD: FILE - "+(file.src));
         });
 
+        this.load.on('loaderror', function (file) {
+            this.loadissue = true;
+            alert('Please try again later.');
+            Global.Log("PRELOAD: FILE FAILED - "+(file.src));
+        });
+
         this.load.on('complete', function () {
             Global.Log('PRELOAD: COMPLETE');
             thisclass.progresspercent_val = 50;
-            if(thisclass.progress_val >= 100){
+            if(thisclass.progress_val >= 100 && !this.loadissue){
                 thisclass.load.off('progress');;
                 thisclass.load.off('fileprogress');
                 thisclass.load.off('complete');
