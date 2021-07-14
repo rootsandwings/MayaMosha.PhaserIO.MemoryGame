@@ -462,7 +462,6 @@ KGames.Summary.prototype = {
                         callback: () =>{
                             thisclass.challenge_bol = true;
                             thisclass.closethisscene();
-                            GameSummaryActions.GOAHED();
                         },
                         loop: false
                     });
