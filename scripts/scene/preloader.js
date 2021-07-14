@@ -104,10 +104,10 @@ KGames.Preloader.prototype = {
             //LOAD LANGUAGE GAME AUDIO & IMAGE
             this.applang = (CONFIG.LANG || "").toLowerCase();
             if(this.applang != null && this.applang != ""){
-                this.load.script('TDictJS', "scripts/dictionary/"+(this.applang)+"/letter.js");
-                this.load.script('TDataJS', "scripts/data/"+(this.applang)+"/letter.js");
-                this.load.script('IDictJS', "scripts/dictionary/"+(this.applang)+"/image.js");
-                this.load.script('IDataJS', "scripts/data/"+(this.applang)+"/image.js");
+                this.load.script('TDictJS', "scripts/dictionary/letter.js");
+                this.load.script('TDataJS', "scripts/data/letter.js");
+                this.load.script('IDictJS', "scripts/dictionary/image.js");
+                this.load.script('IDataJS', "scripts/data/image.js");
             }
         }
     },
@@ -115,21 +115,29 @@ KGames.Preloader.prototype = {
     preloadgameassets: function(){
         let thisclass = this;
         let CONFIG = Global.GameJson.CONFIG;
-        if(TDict && IDict){
-            for(const key in TDict){
-                if(TDict[key].AUDIO && TDict[key].AUDIO != ""){
-                    this.load.audio(CONFIG.ID+"-"+"LETTER-SND"+TDict[key].ID,TDict[key].AUDIO);
+        if(this.applang != null && this.applang != ""){
+            if(TDict && IDict){
+                if(TDict[this.applang] && IDict[this.applang]){
+                    for(const key in TDict[this.applang]){
+                        if(TDict[this.applang][key].AUDIO && TDict[this.applang][key].AUDIO != ""){
+                            this.load.audio(CONFIG.ID+"-"+"LETTER-SND"+TDict[this.applang][key].ID,TDict[this.applang][key].AUDIO);
+                        }
+                    }
+                    for(const key in IDict[this.applang]){
+                        if(IDict[this.applang][key].IMAGE && IDict[this.applang][key].IMAGE != ""){
+                            this.load.image(CONFIG.ID+"-"+"IMAGE"+IDict[this.applang][key].ID,IDict[this.applang][key].IMAGE);
+                        }
+                        if(IDict[this.applang][key].AUDIO && IDict[this.applang][key].AUDIO != ""){
+                            this.load.audio(CONFIG.ID+"-"+"IMAGE-SND"+IDict[this.applang][key].ID,IDict[this.applang][key].AUDIO);
+                        }
+                    }
+                    this.load.start();
+                }else{
+                    thisclass.movetoscene();
                 }
+            }else{
+                thisclass.movetoscene();
             }
-            for(const key in IDict){
-                if(IDict[key].IMAGE && IDict[key].IMAGE != ""){
-                    this.load.image(CONFIG.ID+"-"+"IMAGE"+IDict[key].ID,IDict[key].IMAGE);
-                }
-                if(IDict[key].AUDIO && IDict[key].AUDIO != ""){
-                    this.load.audio(CONFIG.ID+"-"+"IMAGE-SND"+IDict[key].ID,IDict[key].AUDIO);
-                }
-            }
-            this.load.start();
         }else{
             thisclass.movetoscene();
         }

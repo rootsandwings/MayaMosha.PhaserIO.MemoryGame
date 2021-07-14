@@ -85,6 +85,9 @@ KGames.MemoryGame.prototype = {
         this.introsnd_tmr = null;
         this.task_tmr = null;
 
+        //Language
+        this.applang = (this.CONFIG.LANG || "").toLowerCase();
+
         //PRESET VALUES
         if(this.CONFIG.CELEBRATION){
             if(this.CONFIG.CELEBRATION.VISIBLE != null){
@@ -434,8 +437,8 @@ KGames.MemoryGame.prototype = {
         }
         //TYPE
         if(tdata.TEXT != null && tdata.IMAGE != null && tdata.TEXT && tdata.IMAGE){
-            let idatavl = IData["line"+lineval];
-            let tdatavl = TData["line"+lineval];
+            let idatavl = IData[this.applang]["line"+lineval];
+            let tdatavl = TData[this.applang]["line"+lineval];
             if(idatavl != null && tdatavl != null){
                 let icnt = 0, lcnt = 0;
                 let textlimit = Math.ceil(this.totalcard_val/2);
@@ -457,7 +460,7 @@ KGames.MemoryGame.prototype = {
                 }
             }
         }else if(tdata.TEXT != null && tdata.TEXT){
-            let tdatavl = TData["line"+lineval];
+            let tdatavl = TData[this.applang]["line"+lineval];
             let lcnt = 0;
             if(tdatavl != null){
                 for(let j=0; j<this.totalcard_val; j++){
@@ -469,7 +472,7 @@ KGames.MemoryGame.prototype = {
                 }
             }
         }else if(tdata.IMAGE != null && tdata.IMAGE){
-            let idatavl = IData["line"+lineval];
+            let idatavl = IData[this.applang]["line"+lineval];
             let icnt = 0;
             if(idatavl != null){
                 for(let j=0; j<this.totalcard_val; j++){
@@ -628,7 +631,7 @@ KGames.MemoryGame.prototype = {
             cardctr.add(downtile_img);
             //CONTENT
             if(cdata[0] == "text"){
-                carddetails = Global.GetLetterData(TDict,cdata[1]);
+                carddetails = Global.GetLetterData(TDict[this.applang],cdata[1]);
                 let fontsize = this.CONFIG.BOX.FONT.SIZE || 60;
                 fontsize = Math.floor(downtile_img.displayHeight * fontsize);
                 let label_btxt = this.add.bitmapText(0, 0, (this.CONFIG.ID+"-"+this.CONFIG.BOX.FONT.ID), carddetails["LETTER"], fontsize);
@@ -642,7 +645,7 @@ KGames.MemoryGame.prototype = {
                 cardctr.add(label_btxt);
                 fontsize = null;
             }else if(cdata[0] == "image"){
-                carddetails = Global.GetImageData(IDict,cdata[1]);
+                carddetails = Global.GetImageData(IDict[this.applang],cdata[1]);
                 let card_img = this.add.image(0, 0, (this.CONFIG.ID+"-"+"IMAGE"+carddetails["ID"]));
                 sclimg_val = Math.max(downtile_img.displayWidth/card_img.displayWidth, downtile_img.displayHeight/card_img.displayWidth);
                 card_img.setScale(0.01,sclimg_val);
