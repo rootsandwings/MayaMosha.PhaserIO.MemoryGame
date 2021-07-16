@@ -1,5 +1,8 @@
 KGames.Summary = function(){};
 
+//APP CODE
+const GameSummaryActions = { GOBACK(){}, GOAHED(){}, UPDATEPOINTS(score){} };
+
 //Prototype
 KGames.Summary.prototype = {
 
@@ -12,6 +15,7 @@ KGames.Summary.prototype = {
         this.showceleb_bol = data.showcelebration;
         this.challenge_bol = false;
         this.challengelast_bol = data.cflag;
+        this.autoclose_bol = data.autoclose;
 
         //Value
         this.swidth_val = this.game.config.width; // stage width
@@ -68,12 +72,16 @@ KGames.Summary.prototype = {
         }
     },
     
-    callsceneclose: function(){
+    callsceneclose: function(flag){
         let thisclass = this;
         this.scenehide_tmr = this.time.addEvent({
             delay: this.scenehidetime_val,               
             callback:()=>{
                 thisclass.closethisscene();
+                if(flag){
+                    Global.Log("Auto Close Called!");
+                    GameSummaryActions.GOBACK();
+                }
             },
             loop: false,
         });
@@ -348,7 +356,7 @@ KGames.Summary.prototype = {
         if(this.scoreflag_val == 1 && !this.challengelast_bol){
             this.callnextwindow();
         }else{
-            this.callsceneclose();
+            this.callsceneclose(this.autoclose_bol);
         }
     },
 
@@ -485,6 +493,7 @@ KGames.Summary.prototype = {
                         delay: Math.floor(thisclass.btnanimtime_val * 1.25),
                         callback: () =>{
                             thisclass.closethisscene();
+                            GameSummaryActions.GOBACK();
                         },
                         loop: false
                     });
@@ -520,6 +529,7 @@ KGames.Summary.prototype = {
                 this.createcelebration();
                 this.playcorrectsnd();
                 this.showcelebration(this.showceleb_bol);
+                GameSummaryActions.UPDATEPOINTS(this.score_val);
             }
         }
     },
