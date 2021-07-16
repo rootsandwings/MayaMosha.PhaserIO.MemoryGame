@@ -1,6 +1,20 @@
 //GLOBAL Variable Letter Data
 let TData = {}
 
-TData["line1"] = ["అ", "ఆ", "ఇ", "ఈ"]
-TData["line2"] = ["ఉ", "ఊ", "ఋ", "ఎ"]
-TData["line3"] = ["ఏ", "ఐ", "ఒ", "ఓ"]
+TData["line1"] = ["అ", "ఆ", "ఇ", "ఈ","ఉ"]
+TData["line2"] = ["ఊ", "ఋ", "ఎ","ఏ", "ఐ"]
+TData["line3"] = ["ఒ", "ఓ", "ఔ", "అం","అః" ]
+TData["line4"] = ["క", "ఖ", "గ"]
+TData["line5"] = ["గ", "ఘ", "ఙ"]
+TData["line6"] = ["చ", "ఛ", "జ"]
+TData["line7"] = ["జ", "ఝ", "ఞ"]
+TData["line8"] = ["ట", "ఠ", "డ"]
+TData["line9"] = ["డ", "ఢ", "ణ"]
+TData["line10"] = ["త", "థ", "ద"]
+TData["line11"] = ["ద", "ధ", "న"]
+TData["line12"] = ["ప", "ఫ", "బ"]
+TData["line13"] = ["బ", "భ", "మ"]
+TData["line14"] = ["య", "ర", "ల"]
+TData["line15"] = ["ల", "వ", "శ"]
+TData["line16"] = ["ష", "స", "హ"]
+TData["line17"] = ["ళ", "క", "ఱ"]

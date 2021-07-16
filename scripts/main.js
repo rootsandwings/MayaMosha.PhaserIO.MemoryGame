@@ -36,7 +36,7 @@ window.onload = function(){
     game.scene.add('summary', KGames.Summary);
 
     //GAME URL
-    Global.GameUrl = "/json/memory_telugu.json";
+    Global.GameUrl = "/json/mem_telugurow7.json";
     
     //INIT BOOT SCENE
     game.scene.start('boot');

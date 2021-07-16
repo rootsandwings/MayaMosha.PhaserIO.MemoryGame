@@ -1,6 +1,20 @@
 //GLOBAL Variable Images Data
 let IData = {}
 
-IData["line1"] = ["lamp","mosha"]
-IData["line2"] = ["lamp","mosha"]
-IData["line3"] = ["lamp","mosha"]
+IData["line1"] = ["mosha"]
+IData["line2"] = ["josh"]
+IData["line3"] = ["lamp"]
+IData["line4"] = ["lamp","mosha","josh"]
+IData["line5"] = ["lamp","mosha","josh"]
+IData["line6"] = ["lamp","mosha","josh"]
+IData["line7"] = ["lamp","mosha","josh"]
+IData["line8"] = ["lamp","mosha","josh"]
+IData["line9"] = ["lamp","mosha","josh"]
+IData["line10"] = ["lamp","mosha","josh"]
+IData["line11"] = ["lamp","mosha","josh"]
+IData["line12"] = ["lamp","mosha","josh"]
+IData["line13"] = ["lamp","mosha","josh"]
+IData["line14"] = ["lamp","mosha","josh"]
+IData["line15"] = ["lamp","mosha","josh"]
+IData["line16"] = ["lamp","mosha","josh"]
+IData["line17"] = ["lamp","mosha","josh"]
