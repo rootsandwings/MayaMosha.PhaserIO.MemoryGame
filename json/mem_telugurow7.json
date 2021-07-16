@@ -68,8 +68,9 @@
 
         "CELEBRATION":{
             "VISIBLE": true
-        }
+        },
 
+        "AUTO-CLOSE": true
     },
 
     "DATA": {
